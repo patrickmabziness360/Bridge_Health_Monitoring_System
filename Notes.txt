@@ -1,0 +1,4 @@
+https://www.hackster.io/Vaibhavpwr/iot-based-bridge-health-monitoring-alerting-system-d13ff7
+
+#accelerometer with raspberry pi
+https://circuitdigest.com/microcontroller-projects/mpu6050-gyro-sensor-interfacing-with-raspberry-pi
