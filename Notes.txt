@@ -2,3 +2,32 @@ https://www.hackster.io/Vaibhavpwr/iot-based-bridge-health-monitoring-alerting-s
 
 #accelerometer with raspberry pi
 https://circuitdigest.com/microcontroller-projects/mpu6050-gyro-sensor-interfacing-with-raspberry-pi
+
+# git reference
+https://docs.github.com/en/repositories/creating-and-managing-repositories/renaming-a-repository
+
+
+SW-420 Vibration sensor.
+Strain Sensor (Load Cell).
+Water level indicator(Songhe water level sensor).
+Accelerometer (MPU-6050 IMU 3 axis ).
+Ultrasonic Sensor X 2
+ESP 8266
+Servo Motor
+Alphanumeric (i2c)LCD, 16 x 2
+Breadboard.
+Power supply(5v).
+
+links from macheso
+https://randomnerdtutorials.com/esp8266-nodemcu-stepper-motor-28byj-48-uln2003/
+https://randomnerdtutorials.com/arduino-mpu-6050-accelerometer-gyroscope/
+https://randomnerdtutorials.com/esp8266-load-cell-hx711/
+
+https://randomnerdtutorials.com/getting-started-with-esp8266-wifi-transceiver-review/
+https://randomnerdtutorials.com/how-to-install-esp8266-board-arduino-ide/
+
+https://github.com/biancaj123/IoT-based-bridge-safety-monitoring-system
+
+https://quartzcomponents.com/blogs/electronics-projects/iot-based-accident-detection-system-using-vibration-sensor-module
+https://www.youtube.com/playlist?list=PLUg-RvBnK2zaHDeWkeXDkz20sXLry8oVH
+
