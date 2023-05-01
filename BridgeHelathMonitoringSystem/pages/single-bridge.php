@@ -5,8 +5,8 @@
   ////GET  NEWS/////
   if (isset($_GET['id']) && !empty($_GET['id'])) {
     $id = $_GET['id'];
-    $slider_national_news = $conn->query("SELECT LTP.*, LTPF.Caption,LTPF.AttachmentName FROM lita.tblPosts LTP LEFT JOIN lita.tblPostFiles LTPF ON LTP.PostID = LTPF.PostID WHERE LTP.PostID =$id;");
-    $result = $slider_national_news -> fetch_assoc();
+    $bridge_information = $conn->query("SELECT LTP.*, LTPF.Caption,LTPF.AttachmentName FROM bridge.tblBridge LTP LEFT JOIN bridge.tblBridgeImages LTPF ON LTP.BridgeID = LTPF.BridgeID WHERE LTP.BridgeID =$id;");
+    $result = $bridge_information -> fetch_assoc();
 
   }else{
     header("Location:../index.php");
@@ -20,14 +20,9 @@
         <div class="flash-news-banner">
           <div class="container">
             <div class="d-lg-flex align-items-center justify-content-between">
-              <div class="d-flex align-items-center">
-                <span class="badge badge-dark mr-3">Flash news</span>
-              </div>
+              
                   <span>
-                    <marquee scrollamount="6" style="float:left; width:800px; padding: 9px 0px 0px 0px"><font size="3">
-                      <?=$moving_text;?>
-                    </font>
-                    </marquee></span>
+                  </span>
                   
               <div class="d-flex">
                 <span class="mr-3 text-danger">
@@ -50,7 +45,7 @@
                     <div class="col-lg-8">
                       <div>
                         <h1 class="font-weight-600 mb-1">
-                          <?=$result['Title'];?>
+                          <?=$result['Location'];?>
                         </h1>
                         <p class="fs-13 text-muted mb-0">
                           <span class="mr-2">Date -</span><?=date('d F Y', strtotime($result['CreatedAt']));?>
@@ -63,24 +58,24 @@
                           />
                         </div>
                         <div class="mb-4 fs-15" style="border: 1px solid #dbdbdb;padding: 22px; border-top: none;">
-                          <?=$result['Content'];?>
+                          <?=$result['Location'];?>
                         </div>
                       </div>
                     </div>
                     <div class="col-lg-4" >
                       <h2 class="mb-4 text-primary font-weight-600">
-                        Latest news
+                      Nearest Bridges
                       </h2>
                       <?php
-                        while ($row = $lates_news->fetch_assoc()) {?>
+                        while ($row = $nearestBridges->fetch_assoc()) {?>
                           <div class="row" >
-                            <a href="single-news.php?id=<?=$row['PostID'];?>" style ="color: #032a63 !important;text-decoration: none;" >
+                            <a href="single-news.php?id=<?=$row['BridgeID'];?>" style ="color: #032a63 !important;text-decoration: none;" >
                               <div class="col-sm-12">
                                 <div class="border-bottom pb-4 pt-4">
                                   <div class="row">
                                     <div class="col-sm-7">
                                       <h5 class="font-weight-600 mb-1">
-                                        <?=$row['Title'] ;?>
+                                        <?=$row['Location'] ;?>
                                       </h5>
                                       <p class="fs-13 text-muted mb-0">
                                         <span class="mr-2">Date </span><?=date('d F Y', strtotime($row['CreatedAt']));?>
@@ -112,9 +107,7 @@
         <!-- container-scroller ends -->
 
         <!-- partial:partials/_footer.html -->
-        <?php
-          include '../include/footer.php';
-        ?>
+       
 
         <!-- partial -->
       </div>

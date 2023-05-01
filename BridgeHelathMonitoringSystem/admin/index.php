@@ -337,14 +337,14 @@ include 'head.php';
                              
                                 <div class="action">
                                   <button class="text-primary" data-bs-toggle="modal"
-                                    data-bs-target="#editModal<?= $row['UserName']; ?>">
+                                    data-bs-target="#editModal<?= $row['Name']; ?>">
                                     <i class="lni lni-pencil"></i>
                                   </button> |
                                   <button class="text-danger" data-bs-toggle="modal"
-                                    data-bs-target="#deleteModal<?= $row['UserName']; ?>"><i class="lni lni-trash-can"></i>
+                                    data-bs-target="#deleteModal<?= $row['Name']; ?>"><i class="lni lni-trash-can"></i>
                                   </button>
                                   <button class="text-danger" data-bs-toggle="modal"
-                                    data-bs-target="#deleteModal<?= $row['UserName']; ?>"><i class="lni lni-trash-can"></i>
+                                    data-bs-target="#deleteModal<?= $row['Name']; ?>"><i class="lni lni-trash-can"></i>
                                   </button>
                                 </div>
                             

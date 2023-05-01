@@ -39,7 +39,7 @@
                     <a href="<?= $relative_path; ?>#" class="nav-link"><i class="mdi mdi-magnify"></i></a>
                   </li>
                   <li class="nav-item">
-                    <a href="<?= $relative_path; ?>admin/login.php" target="_blank" class="nav-link">Login</a>
+                    <a href="<?= $relative_path; ?>admin/login.php"  class="nav-link">Login</a>
                   </li><!-- 
                     <li class="nav-item">
                       <a href="<?= $relative_path; ?>#" class="nav-link">Subscribe</a>
@@ -77,9 +77,9 @@
       <?php
 
 
-      $closest_bridge = $conn->query("SELECT LTP.*, LTPF.Caption,LTPF.AttachmentName FROM lita.tblPosts LTP LEFT JOIN lita.tblPostFiles LTPF ON LTP.PostID = LTPF.PostID WHERE IsNational = 'YES' ORDER BY LTP.CreatedAt DESC LIMIT 1;");
+      $closest_bridge = $conn->query("SELECT LTP.*, LTPF.Caption,LTPF.AttachmentName FROM bridge.tblBridge LTP LEFT JOIN bridge.tblBridgeImages LTPF ON LTP.BridgeID = LTPF.BridgeID ORDER BY LTP.CreatedAt DESC LIMIT 1;");
 
-      $nearestBridgesQuery = "SELECT LTP.*, LTPF.Caption,LTPF.AttachmentName FROM lita.tblPosts LTP LEFT JOIN lita.tblPostFiles LTPF ON LTP.PostID = LTPF.PostID ORDER BY LTP.CreatedAt DESC LIMIT 4;";
+      $nearestBridgesQuery = "SELECT LTP.*, LTPF.Caption,LTPF.AttachmentName FROM bridge.tblBridge LTP LEFT JOIN bridge.tblBridgeImages LTPF ON LTP.BridgeID = LTPF.BridgeID ORDER BY LTP.CreatedAt DESC LIMIT 4;";
       $nearestBridges = $conn->query($nearestBridgesQuery);
 
       $recent_posts = $conn->query($nearestBridgesQuery);

@@ -3,15 +3,14 @@ include '../common/access.php';
 include '../common/db_connect.php';
 
 
-$all_bridges = $conn->query("SELECT LTP.*,LTPF.AttachmentName FROM lita.tblPosts LTP LEFT JOIN lita.tblPostFiles LTPF ON LTP.PostID = LTPF.PostID WHERE PostType = 'news' ORDER BY CreatedAt DESC;");
+$all_bridges = $conn->query("SELECT * FROM bridge.tblBridge  ORDER BY CreatedAt DESC;");
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 
-<!-- Mirrored from demo.plainadmin.com/datatables.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 30 Jan 2023 17:56:06 GMT -->
-<!-- Added by HTTrack -->
-<meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+
+<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
 <?php
 include 'head.php';
 ?>
@@ -37,7 +36,7 @@ include 'head.php';
       $postid = $_POST['postid'];
 
       //DELETING A FILE 
-      $sql = "SELECT AttachmentName FROM lita.tblPostFiles WHERE PostID = '$postid';";
+      $sql = "SELECT AttachmentName FROM bridge.tblBridgeImages WHERE PostID = '$postid';";
       $stmt = mysqli_prepare($conn, $sql);
       mysqli_stmt_execute($stmt);
       $result = mysqli_stmt_get_result($stmt);
@@ -47,7 +46,7 @@ include 'head.php';
       }
 
       if (unlink('../upload/' . $fileName)) {
-        $conn->query("DELETE FROM lita.tblPosts WHERE PostID = '$postid';");
+        $conn->query("DELETE FROM bridge.tblBridgeImages WHERE PostID = '$postid';");
         $message = "successfully deleted <b>" . $postid . "</b>";
 
         echo '<script language="javascript">'
@@ -82,8 +81,8 @@ include 'head.php';
 
                 <div class="tab-content" id="nav-tabContent2">
                   <div class="tab-pane fade show active" id="news">
-                    <a href="add-news.php" class="btn primary-btn"> <span class=" lni lni-plus"></span> Add
-                      News</a><br><br><br>
+                    <a href="add-bridge.php" class="btn primary-btn"> <span class=" lni lni-plus"></span> Add
+                      Bridge</a><br><br><br>
                     <div class="table-responsive">
                       <table id="table" class="table">
                         <thead>
@@ -117,34 +116,38 @@ include 'head.php';
                                 <?= $serial; ?>
                               </td>
                               <td>
-                                <?= substr($row['Title'], 0, 40); ?>
+                                <?= substr($row['Name'], 0, 40); ?>
                               </td>
                               <td>
-                                <?= substr($row['PostCategory'], 0, 40); ?>
+                                <?= substr($row['Location'], 0, 40); ?>
                               </td>
                               <td>
-                                <?= ucfirst($row['Focus']); ?>
-                              </td>
-                              <td>
-                                <?= date('d F Y ', strtotime($row['CreatedAt'])); ?>
-                              </td>
-                              <td>
+                              <p><a href="#0">
+                                  <?= $row['BridgeStatus']; ?>
+                                </a></p>
+                            </td>
+                            <td>
+                              <p><a href="#0">
+                                  <?= $row['RoadStatus']; ?>
+                                </a></p>
+                            </td>
+                            <td>
                                 <div class="action">
                                   <form class="text-primary"
-                                    action="add-news.php?action=editPost&amp;qwert=<?php echo $row['PostID']; ?>"
+                                    action="add-bridge.php?action=editPost&amp;qwert=<?php echo $row['BridgeID']; ?>"
                                     enctype="multipart/form-data" method="POST">
 
                                     <button type="submit" name="editpost" class="lni lni-pencil"></button>
 
                                   </form>
                                   | <button class="text-danger" data-bs-toggle="modal"
-                                    data-bs-target="#deleteModal<?= $row['PostID']; ?>"><i class="lni lni-trash-can"></i>
+                                    data-bs-target="#deleteModal<?= $row['BridgeID']; ?>"><i class="lni lni-trash-can"></i>
                                   </button>
                                 </div>
                               </td>
 
                               <!-- Delete Modal -->
-                              <div class="modal fade" id="deleteModal<?= $row['PostID']; ?>" tabindex="-1"
+                              <div class="modal fade" id="deleteModal<?= $row['BridgeID']; ?>" tabindex="-1"
                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">
                                   <div class="modal-content">
@@ -161,7 +164,7 @@ include 'head.php';
                                     <div class="modal-footer">
                                       <form action="news.php" method="post">
                                         <button type="submit" name="delete_post" class="btn btn-primary">Yes</button>
-                                        <input type="hidden" name="postid" value="<?= $row['PostID']; ?>">
+                                        <input type="hidden" name="postid" value="<?= $row['BridgeID']; ?>">
                                         <button type="button" class="btn btn-secondary"
                                           data-bs-dismiss="modal">No</button>
                                       </form>
@@ -195,9 +198,7 @@ include 'head.php';
     <!-- ========== table components end ========== -->
 
     <!-- ========== footer start =========== -->
-    <?php
-    include 'footer_admin.php';
-    ?>
+   
     <!-- ========== footer end =========== -->
   </main>
   <!-- ======== main-wrapper end =========== -->

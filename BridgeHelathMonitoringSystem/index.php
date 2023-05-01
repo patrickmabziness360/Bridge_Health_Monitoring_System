@@ -36,17 +36,17 @@ include('include/menu_bar.php');
         <div class="position-relative">
           <?php
           while ($row = $closest_bridge->fetch_assoc()) { ?>
-            <a href="pages/single-news.php?id=<?= $row['PostID']; ?>">
+            <a href="pages/single-bridge.php?id=<?= $row['BridgeID']; ?>">
               <img src="upload/<?= $row['AttachmentName']; ?>" alt="banner" class="img-fluid" />
               <div class="banner-content" style="background-color: #00000085;">
                 <div class="badge badge-danger fs-12 font-weight-bold mb-3">
-                  national news
+                  Road Closed
                 </div>
                 <h1 class="mb-0">
-                  <?= $row['Title']; ?>
+                  <?= $row['Location']; ?>
                 </h1>
                 <h1 class="mb-2">
-                  <?= substr($row['Subtitle'], 0, 50) . '...'; ?>
+                  <?= substr($row['Name'], 0, 50) . '...'; ?>
                 </h1>
                 <div class="fs-12">
                   <span class="mr-2">Date </span>
@@ -66,15 +66,15 @@ include('include/menu_bar.php');
 
             <?php
             while ($row = $nearestBridges->fetch_assoc()) { ?>
-              <a href="pages/single-news.php?id=<?= $row['PostID']; ?>" style="color: white;">
+              <a href="pages/single-bridge.php?id=<?= $row['BridgeID']; ?>" style="color: white;">
                 <div class="d-flex border-bottom-blue pt-3 align-items-center justify-content-between">
 
                   <div class="pr-3">
                     <h5>
-                      <?= substr($row['Title'], 0, 30) . '...'; ?>
+                      <?= substr($row['Name'], 0, 30) . '...'; ?>
                     </h5>
                     <div class="fs-12">
-                      <span class="mr-2">Date </span>
+                      <span class="mr-2">Status </span>
                       <?= date('d F Y', strtotime($row['CreatedAt'])); ?>
                     </div>
                   </div>
