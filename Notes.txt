@@ -31,3 +31,6 @@ https://github.com/biancaj123/IoT-based-bridge-safety-monitoring-system
 https://quartzcomponents.com/blogs/electronics-projects/iot-based-accident-detection-system-using-vibration-sensor-module
 https://www.youtube.com/playlist?list=PLUg-RvBnK2zaHDeWkeXDkz20sXLry8oVH
 
+
+https://robu.in/water-level-indicator-interfacing-with-arduino-connection-and-code/
+
