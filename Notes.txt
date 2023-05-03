@@ -21,7 +21,7 @@ Power supply(5v).
 links from macheso
 https://randomnerdtutorials.com/esp8266-nodemcu-stepper-motor-28byj-48-uln2003/
 https://randomnerdtutorials.com/arduino-mpu-6050-accelerometer-gyroscope/
-https://randomnerdtutorials.com/esp8266-load-cell-hx711/
+-
 
 https://randomnerdtutorials.com/getting-started-with-esp8266-wifi-transceiver-review/
 https://randomnerdtutorials.com/how-to-install-esp8266-board-arduino-ide/
