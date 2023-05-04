@@ -36,7 +36,7 @@ include 'head.php';
       $postid = $_POST['postid'];
 
       //DELETING A FILE 
-      $sql = "SELECT AttachmentName FROM bridge.tblBridgeImages WHERE PostID = '$postid';";
+      $sql = "SELECT AttachmentName FROM bridge.tblBridgeImages WHERE BridgeID = '$postid';";
       $stmt = mysqli_prepare($conn, $sql);
       mysqli_stmt_execute($stmt);
       $result = mysqli_stmt_get_result($stmt);
@@ -46,7 +46,7 @@ include 'head.php';
       }
 
       if (unlink('../upload/' . $fileName)) {
-        $conn->query("DELETE FROM bridge.tblBridgeImages WHERE PostID = '$postid';");
+        $conn->query("DELETE FROM bridge.tblBridgeImages WHERE BridgeID = '$postid';");
         $message = "successfully deleted <b>" . $postid . "</b>";
 
         echo '<script language="javascript">'
@@ -158,11 +158,11 @@ include 'head.php';
                                     </div>
                                     <div class="modal-body">
                                       Are you sure you want to delete <b>
-                                        <?= $row['Title']; ?>
+                                        <?= $row['Name']; ?>
                                       </b>
                                     </div>
                                     <div class="modal-footer">
-                                      <form action="news.php" method="post">
+                                      <form action="bridges.php" method="post">
                                         <button type="submit" name="delete_post" class="btn btn-primary">Yes</button>
                                         <input type="hidden" name="postid" value="<?= $row['BridgeID']; ?>">
                                         <button type="button" class="btn btn-secondary"

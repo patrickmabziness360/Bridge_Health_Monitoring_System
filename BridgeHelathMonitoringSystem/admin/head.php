@@ -7,7 +7,7 @@
       href="assets/images/lita.png"
       type="image/x-icon"
     />
-    <title>Lita CMS</title>
+    <title>BHMS</title>
 
     <!-- ========== All CSS files linkup ========= -->
     <link rel="stylesheet" href="assets/css/bootstrap.min.css" />

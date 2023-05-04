@@ -26,7 +26,6 @@ https://randomnerdtutorials.com/arduino-mpu-6050-accelerometer-gyroscope/
 https://randomnerdtutorials.com/getting-started-with-esp8266-wifi-transceiver-review/
 https://randomnerdtutorials.com/how-to-install-esp8266-board-arduino-ide/
 
-https://github.com/biancaj123/IoT-based-bridge-safety-monitoring-system
 
 https://quartzcomponents.com/blogs/electronics-projects/iot-based-accident-detection-system-using-vibration-sensor-module
 https://www.youtube.com/playlist?list=PLUg-RvBnK2zaHDeWkeXDkz20sXLry8oVH

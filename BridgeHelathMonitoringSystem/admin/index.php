@@ -282,8 +282,8 @@ include 'head.php';
                   </div>
                   <div class="table-wrapper table-responsive">
                    
-                      <button class="btn primary-btn" data-bs-toggle="modal" data-bs-target="#addUserModal"><i
-                          class="lni lni-plus"></i> Add New Bridge</button>
+                      <button class="btn primary-btn" data-bs-toggle="modal" data-bs-target="#addUserModal">
+                           Critical Bridges</button>
                     
                     <table class="table">
                       <thead>
@@ -343,9 +343,7 @@ include 'head.php';
                                   <button class="text-danger" data-bs-toggle="modal"
                                     data-bs-target="#deleteModal<?= $row['Name']; ?>"><i class="lni lni-trash-can"></i>
                                   </button>
-                                  <button class="text-danger" data-bs-toggle="modal"
-                                    data-bs-target="#deleteModal<?= $row['Name']; ?>"><i class="lni lni-trash-can"></i>
-                                  </button>
+                                 
                                 </div>
                             
 
@@ -472,84 +470,13 @@ include 'head.php';
         </div>
         <!-- end container -->
     </section>
-    <!-- Modal -->
-    <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-
-            <h5 class="modal-title" id="exampleModalLabel">Create New User</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-
-          <div class="modal-body">
-            <form action="index.php" method="post" autocomplete="off">
-              <div class="form-group <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>">
-                <label>Username</label>
-                <input type="text" name="username" class="form-control" value="<?php echo $username; ?>">
-                <span class="text-danger">
-                  <?php echo $username_err; ?>
-                </span>
-              </div>
-              <div class="form-group <?php echo (!empty($email_err)) ? 'has-error' : ''; ?>">
-                <label>Email</label>
-                <input type="email" name="email" class="form-control" value="<?php echo $email; ?>">
-                <span class="text-danger">
-                  <?php echo $email_err; ?>
-                </span>
-              </div>
-              <div class="form-group <?php echo (!empty($role_err)) ? 'has-error' : ''; ?>">
-                <label>Role</label>
-                <select name="role" class="form-control">
-                  <option selected disabled hidden>--Select--</option>
-                  <?php
-                  $all_user_roles = $conn->query("SELECT * FROM bridge.tblRoles;");
-                  while ($row = $all_user_roles->fetch_assoc()) { ?>
-                    <option <?php if ($role == $row['RoleID'])
-                      echo "selected"; ?> value="<?= $row['RoleID'] ?>">
-                      <?= $row['RoleName'] ?></option>
-                  <?php }
-                  ?>
-                </select>
-                <span class="text-danger">
-                  <?php echo $role_err; ?>
-                </span>
-              </div>
-              <div class="form-group <?php echo (!empty($password_err)) ? 'has-error' : ''; ?>">
-                <label>Password</label>
-                <input type="password" name="password" class="form-control" value="<?php echo $password; ?>">
-                <span class="text-danger">
-                  <?php echo $password_err; ?>
-                </span>
-              </div>
-              <div class="form-group <?php echo (!empty($confirm_password_err)) ? 'has-error' : ''; ?>">
-                <label>Confirm Password</label>
-                <input type="password" name="confirm_password" class="form-control"
-                  value="<?php echo $confirm_password; ?>">
-                <span class="text-danger">
-                  <?php echo $confirm_password_err; ?>
-                </span>
-              </div>
-              <div class="form-group">
-                <button type="submit" class="btn btn-primary" name="submit">Submit</button>
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-    <?php
-    include 'footer_admin.php';
-    ?>
-    <!-- ========== footer end =========== -->
+   
   </main>
-  <!-- ============ Theme Option End ============= -->
+ ->
 
 
 
 </body>
 
-<!-- Mirrored from demo.plainadmin.com/ by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 30 Jan 2023 17:55:03 GMT -->
 
 </html>

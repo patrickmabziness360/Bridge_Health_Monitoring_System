@@ -85,7 +85,7 @@ if (isset($_POST['saveChanges'])) {
                     // Insert record
                     $sql2 = $conn->query("INSERT INTO bridge.tblBridgeImages (BridgeID, AttachmentName) VALUES ($post_id,'$filename');");
                   if ($sql2) {
-                      header("Location: news.php?value=1");
+                      header("Location: bridges.php?value=1");
                   }else{
                     ////Revert back//////
                     $delete_news = $conn->query("DELETE FROM bridge.tblBridge WHERE BridgeID = $post_id");
