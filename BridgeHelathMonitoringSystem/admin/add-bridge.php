@@ -176,7 +176,7 @@ if (isset($_POST['saveChanges'])) {
             <div class="row align-items-center">
               <div class="col-md-6">
                 <div class="title mb-30">
-                  <h2><?php echo $pagetitle ?></h2>
+                  <h2><?php echo "Edit Bridge" ?></h2>
                 </div>
               </div>
               <!-- end col -->
@@ -208,7 +208,7 @@ if (isset($_POST['saveChanges'])) {
                       </div>
                       <div class="col-md-6">
                         <div class="input-style-2">
-                          <label><h5>Location</h5></label>
+                          <label><h5>Location Name</h5></label>
                           <input name="location" id="location" type="text" placeholder="location Name" value="<?=!empty($location)?$location:'';?>" />
                           <span class="icon"> <i class="lni lni-pencil"></i> </span>
                         </div>
@@ -234,11 +234,11 @@ if (isset($_POST['saveChanges'])) {
                   <div class="col-md-4">
                     <?php if(isset($_POST['editpost'])) : ?>
                     
-                      <button type="submit" name="makeUpdate" class="btn primary-btn">Update News
+                      <button type="submit" name="makeUpdate" class="btn primary-btn">Update Bridge
                       </button>
                  
                   <?php else : ?>
-                     <button type="submit" name="saveChanges" class="btn primary-btn">Submit News
+                     <button type="submit" name="saveChanges" class="btn primary-btn">Add Bridge
                       </button>
                   <?php endif; ?>
                      

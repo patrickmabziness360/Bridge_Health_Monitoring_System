@@ -33,13 +33,7 @@ include 'head.php';
 
     
 
-    ////delete user ///////
-    if (isset($_POST['delete_user'])) {
-      $user = $_POST['username'];
-      $conn->query("DELETE FROM bridge.tblUsers WHERE UserName = '$user';");
-      $message = "successfully deleted <b>" . $user . "</b>";
-
-    }
+    
 
     // Create new user///////
     if (isset($_POST['submit'])) {
@@ -217,7 +211,8 @@ include 'head.php';
 
     }
 
-    $all_bridges = $conn->query("SELECT * FROM bridge.tblBridge;");
+    $all_bridges = $conn->query("SELECT * FROM bridge.tblBridge WHERE BridgeStatus ='Critical';");
+    $all_bridges_Count = $conn->query("SELECT * FROM bridge.tblBridge;");
     $all_users_sql = "SELECT * FROM bridge.tblUsers;";
     $all_users = $conn->query($all_users_sql);
     ?>
@@ -247,7 +242,7 @@ include 'head.php';
               <div class="content">
                 <h6 class="mb-10">Total Bridges</h6>
                 <h3 class="text-bold mb-10">
-                  <?= mysqli_num_rows($all_bridges); ?>
+                  <?= mysqli_num_rows($all_bridges_Count); ?>
                 </h3>
               </div>
             </div>
@@ -282,7 +277,7 @@ include 'head.php';
                   </div>
                   <div class="table-wrapper table-responsive">
                    
-                      <button class="btn primary-btn" data-bs-toggle="modal" data-bs-target="#addUserModal">
+                      <button class="btn primary-btn" data-bs-toggle="modal">
                            Critical Bridges</button>
                     
                     <table class="table">
@@ -427,7 +422,7 @@ include 'head.php';
                               </div>
                             </div>
                             <!-- Delete Modal -->
-                            <div class="modal fade" id="deleteModal<?= $row['UserName']; ?>" tabindex="-1"
+                            <!-- <div class="modal fade" id="deleteModal<?= $row['UserName']; ?>" tabindex="-1"
                               aria-labelledby="exampleModalLabel" aria-hidden="true">
                               <div class="modal-dialog">
                                 <div class="modal-content">
@@ -450,7 +445,7 @@ include 'head.php';
                                   </div>
                                 </div>
                               </div>
-                            </div>
+                            </div> -->
                           </tr>
                         <?php }
 

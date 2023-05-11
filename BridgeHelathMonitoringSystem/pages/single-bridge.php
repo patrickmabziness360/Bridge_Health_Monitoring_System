@@ -22,7 +22,14 @@
             <div class="d-lg-flex align-items-center justify-content-between">
               
                   <span>
+                  <a href="<?= $relative_path; ?>index.php"  >Home</a>
                   </span>
+                  <span>
+                    Bridge Health Monitoring System(BHMS)
+                </span>
+               <span>
+                Group 14
+               </span>
                   
               <div class="d-flex">
                 <span class="mr-3 text-danger">
@@ -32,6 +39,9 @@
                     echo date('d F Y', strtotime($date));
                   ?>
                 </span>
+                <span class="mr-3 text-danger">
+                <a href="<?= $relative_path; ?>admin/login.php"  >Login</a>
+              </span>
               </div>
             </div>
           </div>
@@ -45,7 +55,13 @@
                     <div class="col-lg-8">
                       <div>
                         <h1 class="font-weight-600 mb-1">
-                          <?=$result['Location'];?>
+                        Bridge Name:<?=$result['Name'];?>
+                        </h1>
+                        <h1 class="font-weight-600 mb-1">
+                      
+                        <div class="badge badge-danger fs-12 font-weight-bold mb-3">
+                           Road Closed
+                       </div>
                         </h1>
                         <p class="fs-13 text-muted mb-0">
                           <span class="mr-2">Date -</span><?=date('d F Y', strtotime($result['CreatedAt']));?>
@@ -58,7 +74,25 @@
                           />
                         </div>
                         <div class="mb-4 fs-15" style="border: 1px solid #dbdbdb;padding: 22px; border-top: none;">
-                          <?=$result['Location'];?>
+                        <h1 class="font-weight-600 mb-1">
+                        Location : <?=$result['Location'];?>
+                        </h1>
+                        </div>
+                       
+                        <div class="mb-4 fs-15" style="border: 1px solid #dbdbdb;padding: 22px; border-top: none;">
+                        <h1 class="font-weight-600 mb-1">
+                        Accelerometer : <?=$result['Accelerometer'];?>
+                        </h1>
+                        </div>
+                        <div class="mb-4 fs-15" style="border: 1px solid #dbdbdb;padding: 22px; border-top: none;">
+                        <h1 class="font-weight-600 mb-1">
+                        Vibrations:<?=$result['Vibrations'];?>
+                        </h1>
+                        </div>
+                        <div class="mb-4 fs-15" style="border: 1px solid #dbdbdb;padding: 22px; border-top: none;">
+                        <h1 class="font-weight-600 mb-1">
+                        Water Level:<?=$result['Water_Level'];?>
+                        </h1>
                         </div>
                       </div>
                     </div>
@@ -69,7 +103,7 @@
                       <?php
                         while ($row = $nearestBridges->fetch_assoc()) {?>
                           <div class="row" >
-                            <a href="single-news.php?id=<?=$row['BridgeID'];?>" style ="color: #032a63 !important;text-decoration: none;" >
+                            <a href="single-bridge.php?id=<?=$row['BridgeID'];?>" style ="color: #032a63 !important;text-decoration: none;" >
                               <div class="col-sm-12">
                                 <div class="border-bottom pb-4 pt-4">
                                   <div class="row">
@@ -77,9 +111,11 @@
                                       <h5 class="font-weight-600 mb-1">
                                         <?=$row['Location'] ;?>
                                       </h5>
-                                      <p class="fs-13 text-muted mb-0">
-                                        <span class="mr-2">Date </span><?=date('d F Y', strtotime($row['CreatedAt']));?>
-                                      </p>
+                                        <div class="fs-12">
+                                        <span class="mr-2">Road Status </span>
+                                        <div class="badge badge-danger fs-12 font-weight-bold mb-3">
+                                            Road Closed
+                                  </div>
                                     </div>
                                     <div class="col-sm-5">
                                       <div class="rotate-img">

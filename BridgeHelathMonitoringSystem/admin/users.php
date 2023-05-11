@@ -146,6 +146,13 @@ include 'head.php';
 
     }
 
+    ////delete user ///////
+    if (isset($_POST['delete_user'])) {
+      $user = $_POST['username'];
+      $conn->query("DELETE FROM bridge.tblUsers WHERE UserName = '$user';");
+      $message = "successfully deleted <b>" . $user . "</b>";
+
+    }
     //// Update a user//////
     
     if (isset($_POST['edit_user'])) {
@@ -328,7 +335,7 @@ include 'head.php';
                                   </b>
                                 </div>
                                 <div class="modal-footer">
-                                  <form action="index.php" method="post">
+                                  <form action="users.php" method="post">
                                     <button type="submit" name="delete_user" class="btn btn-primary">Yes</button>
                                     <input type="hidden" name="username" value="<?= $row['UserName']; ?>">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>

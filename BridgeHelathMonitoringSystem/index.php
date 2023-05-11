@@ -14,16 +14,24 @@ include('include/menu_bar.php');
 
       </div>
       <span>
-
+         Bridge Health Monitoring System(BHMS)
+      </span>
+      <span>
+         Group 14
       </span>
 
       <div class="d-flex">
+        
         <span class="mr-3 text-danger">
           <?php
           $date = $conn->query("SELECT now() date");
           $date = $date->fetch_assoc()['date'];
           echo date('d F Y', strtotime($date));
           ?>
+        </span>
+
+        <span class="mr-3 text-danger">
+        <a href="<?= $relative_path; ?>admin/login.php"  >Login</a>
         </span>
       </div>
     </div>
@@ -42,6 +50,7 @@ include('include/menu_bar.php');
                 <div class="badge badge-danger fs-12 font-weight-bold mb-3">
                   Road Closed
                 </div>
+                
                 <h1 class="mb-0">
                   <?= $row['Location']; ?>
                 </h1>
@@ -49,8 +58,8 @@ include('include/menu_bar.php');
                   <?= substr($row['Name'], 0, 50) . '...'; ?>
                 </h1>
                 <div class="fs-12">
-                  <span class="mr-2">Date </span>
-                  <?= date('d F Y', strtotime($row['CreatedAt'])); ?>
+                  <!-- <span class="mr-2">Date </span> -->
+                  BRIDGE NOT SAFE TO USE
                 </div>
               </div>
             </a>
@@ -74,8 +83,10 @@ include('include/menu_bar.php');
                       <?= substr($row['Name'], 0, 30) . '...'; ?>
                     </h5>
                     <div class="fs-12">
-                      <span class="mr-2">Status </span>
-                      <?= date('d F Y', strtotime($row['CreatedAt'])); ?>
+                      <span class="mr-2">Road Status </span>
+                      <div class="badge badge-danger fs-12 font-weight-bold mb-3">
+                           Road Closed
+                </div>
                     </div>
                   </div>
                   <div class="rotate-img">

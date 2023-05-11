@@ -3,7 +3,7 @@ include '../common/access.php';
 include '../common/db_connect.php';
 
 
-$all_bridges = $conn->query("SELECT * FROM bridge.tblBridge  ORDER BY CreatedAt DESC;");
+$all_bridges = $conn->query("SELECT b.*,s.* FROM bridge.tblBridge b LEFT JOIN bridge.tblBridgeSensorData s ON b.BridgeID = s.BridgeID   ORDER BY s.CreatedAt DESC;");
 ?>
 
 <!DOCTYPE html>
@@ -205,46 +205,6 @@ include 'head.php';
 
   <!-- ============ Theme Option Start ============= -->
 
-  <div class="option-overlay"></div>
-  <div class="option-box">
-    <div class="option-header">
-      <h5>Settings</h5>
-      <button class="option-btn-close text-gray">
-        <i class="lni lni-close"></i>
-      </button>
-    </div>
-    <h6 class="mb-10">Layout</h6>
-    <ul class="mb-30">
-      <li><button class="leftSidebarButton active">Left Sidebar</button></li>
-      <li><button class="rightSidebarButton">Right Sidebar</button></li>
-    </ul>
-
-    <h6 class="mb-10">Theme</h6>
-    <ul class="d-flex flex-wrap align-items-center">
-      <li>
-        <button class="lightThemeButton active">
-          Light Theme + Sidebar 1
-        </button>
-      </li>
-      <li>
-        <button class="lightThemeButton2">Light Theme + Sidebar 2</button>
-      </li>
-      <li><button class="darkThemeButton">Dark Theme + Sidebar 1</button></li>
-      <li>
-        <button class="darkThemeButton2">Dark Theme + Sidebar 2</button>
-      </li>
-    </ul>
-
-    <div class="promo-box">
-      <h3>PlainAdmin Pro</h3>
-      <p>Get All Dashboards and 300+ UI Elements</p>
-      <a href="https://plainadmin.com/pro" target="_blank" rel="nofollow" class="main-btn primary-btn btn-hover">
-        Purchase Now
-      </a>
-    </div>
-  </div>
-  <!-- ============ Theme Option End ============= -->
-
   <!-- ========= All Javascript files linkup ======== -->
   <script src="assets/js/bootstrap.bundle.min.js"></script>
   <script src="assets/js/Chart.min.js"></script>
@@ -266,6 +226,5 @@ include 'head.php';
   </script>
 </body>
 
-<!-- Mirrored from demo.plainadmin.com/datatables.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 30 Jan 2023 17:56:06 GMT -->
 
 </html>

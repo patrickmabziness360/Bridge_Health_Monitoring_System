@@ -23,7 +23,7 @@
   <div class="container-scroller">
     <div class="main-panel">
       <!-- partial:partials/_navbar.html -->
-      <header id="header">
+      <!-- <header id="header">
         <div class="container">
           <nav class="navbar navbar-expand-lg navbar-light">
             <div class="navbar-top">
@@ -44,7 +44,7 @@
                     <li class="nav-item">
                       <a href="<?= $relative_path; ?>#" class="nav-link">Subscribe</a>
                     </li> -->
-                </ul>
+                <!-- </ul>
               </div>
             </div>
             <div class="navbar-bottom">
@@ -53,8 +53,8 @@
                   <a class="navbar-brand text2" href="<?= $relative_path; ?>#">
                     Bridge Health Monitoring System</a>
                 </div>
-                <div>
-                  <button class="navbar-toggler" type="button" data-target="#navbarSupportedContent"
+                <div> -->
+                  <!-- <button class="navbar-toggler" type="button" data-target="#navbarSupportedContent"
                     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                   </button>
@@ -67,19 +67,19 @@
                       </li>
                     </ul>
                   </div>
-                </div>
+                </div> -->
 
-              </div>
+              <!-- </div>
             </div>
           </nav>
         </div>
-      </header>
+      </header> -->
       <?php
 
 
-      $closest_bridge = $conn->query("SELECT LTP.*, LTPF.Caption,LTPF.AttachmentName FROM bridge.tblBridge LTP LEFT JOIN bridge.tblBridgeImages LTPF ON LTP.BridgeID = LTPF.BridgeID ORDER BY LTP.CreatedAt DESC LIMIT 1;");
+      $closest_bridge = $conn->query("SELECT LTP.*, LTPF.Caption,LTPF.AttachmentName FROM bridge.tblBridge LTP INNER JOIN bridge.tblBridgeImages LTPF ON LTP.BridgeID = LTPF.BridgeID  ORDER BY CreatedAt DESC LIMIT 1;");
 
-      $nearestBridgesQuery = "SELECT LTP.*, LTPF.Caption,LTPF.AttachmentName FROM bridge.tblBridge LTP LEFT JOIN bridge.tblBridgeImages LTPF ON LTP.BridgeID = LTPF.BridgeID ORDER BY LTP.CreatedAt DESC LIMIT 4;";
+      $nearestBridgesQuery = "SELECT LTP.*, LTPF.Caption,LTPF.AttachmentName FROM bridge.tblBridge LTP INNER JOIN bridge.tblBridgeImages LTPF ON LTP.BridgeID = LTPF.BridgeID ORDER BY LTP.CreatedAt DESC LIMIT 4;";
       $nearestBridges = $conn->query($nearestBridgesQuery);
 
       $recent_posts = $conn->query($nearestBridgesQuery);
