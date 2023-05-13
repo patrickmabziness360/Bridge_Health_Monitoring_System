@@ -96,13 +96,14 @@
                         </div>
                       </div>
                     </div>
+
                     <div class="col-lg-4" >
                       <h2 class="mb-4 text-primary font-weight-600">
                       Nearest Bridges
                       </h2>
                       <?php
                         while ($row = $nearestBridges->fetch_assoc()) {?>
-                          <div class="row" >
+                          <div class="row ml-2" >
                             <a href="single-bridge.php?id=<?=$row['BridgeID'];?>" style ="color: #032a63 !important;text-decoration: none;" >
                               <div class="col-sm-12">
                                 <div class="border-bottom pb-4 pt-4">

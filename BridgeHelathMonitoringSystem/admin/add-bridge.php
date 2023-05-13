@@ -20,7 +20,8 @@ if (isset($_POST['editpost'])) {
             while($row = $result->fetch_assoc()) {
                 $pagetitle = "Edit Bridge";
                 $location_error = $bridgename_error = '';
-                $location = $row["location"];
+                $location = $row["Location"];
+                $bridgename = $row["Name"];
                 }
         }
     
@@ -105,17 +106,12 @@ if (isset($_POST['saveChanges'])) {
    //// Update a post//////
 
    if (isset($_POST['makeUpdate'])) {
-    $national = isset($_POST['national']) ? mysqli_real_escape_string($conn, $_POST['national']) : '';
     $location = isset($_POST['location']) ? mysqli_real_escape_string($conn, $_POST['location']) : '';
-    $post_category = isset($_POST['post_category']) ? mysqli_real_escape_string($conn, $_POST['post_category']) : '';
     $bridgename = isset($_POST['bridgename']) ? mysqli_real_escape_string($conn, $_POST['bridgename']) : '';
-    $focus = isset($_POST['focus']) ? mysqli_real_escape_string($conn, $_POST['focus']) : '';
-    $title = isset($_POST['title']) ? mysqli_real_escape_string($conn, $_POST['title']) : '';
-    $content = isset($_POST['content']) ? mysqli_real_escape_string($conn, $_POST['content']) : '';
-    $editor = $_SESSION['username'];
+    
    
     // Prepare an update location, Editor, Title, Subtitle, PostCategory, Content, Focus, IsNational
-    $sql = "UPDATE bridge.tblPosts SET location='$location',Editor='$editor',Title='$title',Subtitle='$bridgename',PostCategory='$post_category',Content='$content',Focus='$focus',IsNational='$national' WHERE PostID=?";
+    $sql = "UPDATE bridge.tblBridge SET Name='$bridgename',Location='$location' WHERE BridgeID=?";
        
     if ($stmt = mysqli_prepare($conn, $sql)) {
         // Bind variables to the prepared statement as parameters
@@ -127,8 +123,8 @@ if (isset($_POST['saveChanges'])) {
         
         // Attempt to execute the prepared statement
         if (mysqli_stmt_execute($stmt)) {
-            $success = 'Post updated successfully';
-            header("Location: news.php?value=1");
+            $success = 'Bridge updated successfully';
+            header("Location: bridges.php?value=1");
     
         } else {
             echo "Something went wrong. Please try again later";
@@ -147,15 +143,14 @@ if (isset($_POST['saveChanges'])) {
 <!DOCTYPE html>
 <html lang="en">
   
-<!-- Mirrored from demo.plainadmin.com/datatables.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 30 Jan 2023 17:56:06 GMT -->
-<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
   <?php
     include 'head.php';
   ?>
   <body>
     <!-- ======== sidebar-nav start =========== -->
     <?php
-      include 'side_bar.php';
+       include 'side_bar.php';
     ?>
     <div class="overlay"></div>
     <!-- ======== sidebar-nav end =========== -->

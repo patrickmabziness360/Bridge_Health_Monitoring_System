@@ -3,7 +3,7 @@ include '../common/access.php';
 include '../common/db_connect.php';
 
 
-$all_bridges = $conn->query("SELECT b.*,s.* FROM bridge.tblBridge b LEFT JOIN bridge.tblBridgeSensorData s ON b.BridgeID = s.BridgeID   ORDER BY s.CreatedAt DESC;");
+$all_bridges = $conn->query("SELECT * FROM bridge.tblBridge    ORDER BY CreatedAt DESC;");
 ?>
 
 <!DOCTYPE html>
@@ -46,11 +46,11 @@ include 'head.php';
       }
 
       if (unlink('../upload/' . $fileName)) {
-        $conn->query("DELETE FROM bridge.tblBridgeImages WHERE BridgeID = '$postid';");
+        $conn->query("DELETE FROM bridge.tblBridge WHERE BridgeID = '$postid';");
         $message = "successfully deleted <b>" . $postid . "</b>";
 
         echo '<script language="javascript">'
-          . ';location.href="news.php"'
+          . ';location.href="bridges.php"'
           . '</script>';
       }
     }
@@ -151,11 +151,7 @@ include 'head.php';
                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">
                                   <div class="modal-content">
-                                    <div class="modal-header">
-                                      <h5 class="modal-title" id="exampleModalLabel">Delete post</h5>
-                                      <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                                    </div>
+                                    
                                     <div class="modal-body">
                                       Are you sure you want to delete <b>
                                         <?= $row['Name']; ?>

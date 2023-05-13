@@ -5,6 +5,7 @@ CREATE TABLE `tblBridge` (
   `Location` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `api_key_value` varchar(255) NOT NULL,
   `CreatedAt` datetime DEFAULT CURRENT_TIMESTAMP,
+  
   `Cordinates` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `Vibrations` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `Strain` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,

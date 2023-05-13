@@ -150,7 +150,7 @@ include 'head.php';
     //// Update a user//////
     
     if (isset($_POST['edit_user'])) {
-      // Check input errors before inserting in database
+      // Check input errors Before inserting in database
       if (empty($username_err) && empty($password_err) && empty($confirm_password_err) && empty($email_err)) {
 
         $password = password_hash($_POST["confirm_password"], PASSWORD_DEFAULT);
@@ -331,13 +331,13 @@ include 'head.php';
 
                              
                                 <div class="action">
-                                  <button class="text-primary" data-bs-toggle="modal"
-                                    data-bs-target="#editModal<?= $row['Name']; ?>">
-                                    <i class="lni lni-pencil"></i>
-                                  </button> |
-                                  <button class="text-danger" data-bs-toggle="modal"
-                                    data-bs-target="#deleteModal<?= $row['Name']; ?>"><i class="lni lni-trash-can"></i>
-                                  </button>
+                                  <form class="text-primary"
+                                    action="add-bridge.php?action=editPost&amp;qwert=<?php echo $row['BridgeID']; ?>"
+                                    enctype="multipart/form-data" method="POST">
+
+                                    <button type="submit" name="editpost" class="lni lni-pencil"></button>
+
+                                  </form>
                                  
                                 </div>
                             
