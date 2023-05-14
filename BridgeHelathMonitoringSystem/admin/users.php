@@ -25,7 +25,7 @@ include 'head.php';
   <main class="main-wrapper">
     <!-- ========== header start ========== -->
     <?php
-    include 'header.php';
+    //include 'header.php';
 
     //For creating new user Define variables and initialize with empty values
     $username = $password = $email = $confirm_password = $role = "";

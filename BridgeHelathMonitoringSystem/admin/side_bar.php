@@ -46,6 +46,17 @@
         </a>
       </li>
 
+      <li class="nav-item">
+                <a href="logout.php"> 
+                <span class="icon">
+                  <i class="lni lni-exit"></i> 
+                  </span> 
+                <span class="text">
+                Log out
+          </span> 
+        </a>
+              </li>
+
 
 
     </ul>

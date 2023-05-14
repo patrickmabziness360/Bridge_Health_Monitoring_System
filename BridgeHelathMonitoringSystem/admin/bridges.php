@@ -27,7 +27,7 @@ include 'head.php';
   <main class="main-wrapper">
     <!-- ========== header start ========== -->
     <?php
-    include 'header.php';
+    //include 'header.php';
     ?>
     <?php
 
