@@ -159,7 +159,7 @@ if (isset($_POST['saveChanges'])) {
     <main class="main-wrapper">
       <!-- ========== header start ========== -->
       <?php
-        include 'header.php';
+        //include 'header.php';
       ?>
       <!-- ========== header end ========== -->
 
