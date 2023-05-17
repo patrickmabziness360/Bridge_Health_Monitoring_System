@@ -55,3 +55,13 @@ CREATE TABLE `tblUsers` (
 
 INSERT INTO `tblUsers` VALUES (1,'a','admin@gmail.com','$2y$10$AdEeKwZdIt1QWZ08P8.MwuTG8vd9RLQkyXzu1BjCsOcaXPnVOkdSy');
 
+
+CREATE TABLE `testTable` (
+  `valueID` int NOT NULL AUTO_INCREMENT,
+  `sensorName` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `location` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `ultrasonic` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `vibration` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  
+  PRIMARY KEY (`valueID`)
+)

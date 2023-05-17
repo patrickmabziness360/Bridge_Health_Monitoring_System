@@ -14,20 +14,25 @@ $password = "";
 // If you change this value, the ESP8266 sketch needs to match
 $api_key_value = "tPmAT5Ab3j7F9";
 
-$api_key= $sensor = $location = $value1 = $value2 = $distance = "";
+$api_key= $sensor = $location = $distance = $vibration = "";
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     //$api_key = test_input($_POST["api_key"]);
     if($api_key == $api_key_value) {
-        $bridgeID = test_input($_POST["BridgeID"]);
-        $Cordinates = test_input($_POST["Cordinates"]);
-        $Vibrations = test_input($_POST["Vibrations"]);
-        $Strain = test_input($_POST["Strain"]);
-        $Water_Level = test_input($_POST["Water_Level"]);
-        $Accelerometer = test_input($_POST["Accelerometer"]);
-        $Crack = test_input($_POST["Crack"]);
-        $RoadStatus = test_input($_POST["RoadStatus"]);
-        $BridgeStatus = test_input($_POST["BridgeStatus"]);
-        $CreatedAt = test_input($_POST["CreatedAt"]);
+
+       // $bridgeID = test_input($_POST["BridgeID"]);
+        //$Cordinates = test_input($_POST["Cordinates"]);
+        $sensor = test_input($_POST["sensor"]);
+        $location = test_input($_POST["location"]);
+        $ultrasonic = test_input($_POST["distance"]);
+        $vibration = test_input($_POST["vibration"]);
+
+        // $Water_Level = test_input($_POST["Water_Level"]);
+        // $Accelerometer = test_input($_POST["Accelerometer"]);
+        // $Crack = test_input($_POST["Crack"]);
+        // $RoadStatus = test_input($_POST["RoadStatus"]);
+        // $BridgeStatus = test_input($_POST["BridgeStatus"]);
+        // $CreatedAt = test_input($_POST["CreatedAt"]);
         
         
         // Create connection
@@ -37,9 +42,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             die("Connection failed: " . $conn->connect_error);
         } 
         
-        $sql = "INSERT INTO tblBridgeSensorData (BridgeID,Cordinates,Vibrations,Strain,Water_Level,Accelerometer,Crack,RoadStatus,BridgeStatus,CreatedAt)
-        VALUES ('" . $bridgeID . "', '" . $Cordinates . "', '" . $Vibrations . "','" . $Strain . "', '" . $Water_Level . "', '" . $Accelerometer . "',
-        '" . $Crack . "', '" . $RoadStatus . "', '" . $BridgeStatus . "','" . $CreatedAt . "')";
+        $sql = "INSERT INTO testTable (sensorName,location,ultrasonic,vibration)
+        VALUES ('" . $sensor . "', '" . $location . "','" . $ultrasonic . "', '" . $vibration . "')";
         
         if ($conn->query($sql) === TRUE) {
             echo "New record created successfully";

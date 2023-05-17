@@ -11,16 +11,16 @@ class StateMachine:
 
     def process_input(self, input):
         if self.current_state:
-            if input == "0":
+            if input == "1":
                 next_state_name = self.current_state.get_next_state("go to home")
 
-            elif input == "1":
+            elif input == "2":
                 next_state_name = self.current_state.get_next_state("go to work")
                     
-            elif input == "":
+            elif input == "3":
                 next_state_name = self.current_state.get_next_state("go to restaurant")
 
-            elif input == "3":
+            elif input == "4":
                 next_state_name = self.current_state.get_next_state("go to bank")    
             else:
                 next_state_name = self.current_state.get_next_state(input)
@@ -44,15 +44,24 @@ class State:
 
     def add_transition(self, input, next_state):
         self.transitions[input] = next_state
+    # def add_transition(self, input,navigation_options, next_state):
+    #     self.transitions[input] = (next_state, navigation_options)
 
     def get_next_state(self, input):
         return self.transitions.get(input)
 
     def print_info(self):
-        print("You are in", self.name, "State")
+        print("############################ You are in", self.name, "State ###################")
 
+    # def print_transitions(self):
+    #     print("Possible transitions:", list(self.transitions.keys()))
     def print_transitions(self):
-        print("Possible transitions:", list(self.transitions.keys()))
+
+        print("-------------------------- Possible transitions: -------------------------------")
+        for key, value in self.transitions.items():
+            print(key)
+           # print("Value:", value)
+           #print()
 
 
 
@@ -65,19 +74,27 @@ if __name__ == "__main__":
 
     #transitions to the states
     
-        #home transitions
+        # Transitions to the states
     home.add_transition("go to work", "Work")
-         
-         #bank transitions 
+
     bank.add_transition("go home", "Home")
     bank.add_transition("go to work", "Work")
 
-         #work transitions
     work.add_transition("go to bank", "Bank")
     work.add_transition("go to restaurant", "Restaurant")
 
-         #restaurant transitions
     restaurant.add_transition("go to work", "Work")
+
+    #     # Transitions to the states
+    # home.add_transition("1.","go to work", "Work")
+
+    # bank.add_transition("0.","go home", "Home")
+    # bank.add_transition("1.","go to work", "Work")
+
+    # work.add_transition("2.","go to bank", "Bank")
+    # work.add_transition("3.","go to restaurant", "Restaurant")
+
+    # restaurant.add_transition("1.","go to work", "Work")
 
     # Create the state machine
     fsm = StateMachine()
@@ -101,6 +118,3 @@ if __name__ == "__main__":
         fsm.process_input(user_input)
 
     print("Program finished.")
-
-
-    

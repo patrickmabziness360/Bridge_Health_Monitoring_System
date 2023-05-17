@@ -1,3 +1,4 @@
+
 //lIbraries
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
@@ -9,9 +10,12 @@
               //Varible section
 
 LiquidCrystal_I2C lcd(0x27, 16, 2); // Set the LCD address to 0x27 for a 16 chars and 2 line display
+
 Servo servo; // servo object
-int VibrationPin = D3; //vibration sensor pin
 int ServoPin = D4; //servo motor pin 
+
+int VibrationPin = D3; //vibration sensor pin
+
 
 const int trigPin = 12;
 const int echoPin = 14;
@@ -23,10 +27,11 @@ float distanceCm;
 
 const char* thinkspeak_write_api_key ="E0QVN8SP3RECUH2K";
 const char* host = "api.thingspeak.com";
-//const long channelId = "2148181";
+//unsigned long channelID = "2148181";
 
 #define SSID "SKYLABS360(MABZINESS)"
 #define PASSWORD "Tazie25800p"
+
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 WiFiClient client;
@@ -34,7 +39,18 @@ WiFiClient client;
 void setup() {
 
   ThingSpeak.begin(client);
-  WiFi.begin(SSID, PASSWORD);
+
+  // Connect or reconnect to WiFi
+  if(WiFi.status() != WL_CONNECTED){
+      Serial.print("Attempting to connect");
+      while(WiFi.status() != WL_CONNECTED){
+         WiFi.begin(SSID, PASSWORD); 
+        delay(5000);     
+      } 
+      Serial.println("\nConnected.");
+  }
+
+  
   Serial.begin(115200); // Starts the serial communication
   Serial.print(WiFi.status());
 
@@ -52,7 +68,6 @@ void setup() {
   pinMode(VibrationPin,INPUT);//vibration sensor pin
 
    //ultrasonic configurations
-  
   pinMode(trigPin, OUTPUT); // Sets the trigPin as an Output
   pinMode(echoPin, INPUT); // Sets the echoPin as an Input
 }
@@ -86,12 +101,13 @@ void loop() {
  // Prints the distance on the Serial Monitor
   Serial.print("Distance (cm): ");
   Serial.println(distanceCm);
- ThingSpeak.writeField(2148181, 1, distanceCm, thinkspeak_write_api_key);
+
+  ThingSpeak.writeField(2148181, 1, distanceCm, thinkspeak_write_api_key);
+
   //if(distanceCm > 8.0){
   if(Vibration == 1 || distanceCm > 8.0){
        
         lcd.setCursor(0, 1);
-        Serial.println(" Alert Viberation"); //serial monitor for debug 
         servo.write(90); //lotating the servo motor 90 degrees
         lcd.print("NOT SAFE TO USE"); // printing message on the LCD 
         delay(200);
@@ -99,12 +115,24 @@ void loop() {
   }else{
         
         lcd.setCursor(0, 1);
-        Serial.println(" No Vibrations");
         servo.write(0);
         lcd.print("SAFE TO USE");
+        delay(200);
+  }
+
+   
+//for debuging sake 
+  if(Vibration ==1){
+        Serial.println(" Alert Viberation"); //serial monitor for debug 
+        delay(200);
+
+  }else{
+      
+        Serial.println(" No Vibrations");
         delay(200);
   }
 
   //----------------------------------------------------------------------------------
   
 }
+
