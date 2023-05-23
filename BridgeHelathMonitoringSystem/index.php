@@ -55,12 +55,15 @@ include('include/menu_bar.php');
                   <?= $row['Location']; ?>
                 </h1>
                 <h1 class="mb-2">
-                  <?= substr($row['Name'], 0, 50) . '...'; ?>
+                  <?= substr($row['Name'], 0, 80) . '...'; ?>
                 </h1>
-                <div class="fs-12">
+                <div class="fs-22">
                   <!-- <span class="mr-2">Date </span> -->
-                  BRIDGE NOT SAFE TO USE
+                  <div class="badge badge-danger fs-22 font-weight-bold mb-3">
+                BRIDGE NOT SAFE TO USE
                 </div>
+                </div>
+                
               </div>
             </a>
 

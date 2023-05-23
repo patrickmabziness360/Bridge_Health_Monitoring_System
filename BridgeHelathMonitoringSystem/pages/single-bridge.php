@@ -1,5 +1,6 @@
 <?php
-  
+  session_start();
+
   $relative_path = '../';
   include ('../common/db_connect.php');
   ////GET  NEWS/////
@@ -55,12 +56,12 @@
                     <div class="col-lg-8">
                       <div>
                         <h1 class="font-weight-600 mb-1">
-                        Bridge Name:<?=$result['Name'];?>
+                        Bridge Name : <?=$result['Name'];?>
                         </h1>
                         <h1 class="font-weight-600 mb-1">
                       
-                        <div class="badge badge-danger fs-12 font-weight-bold mb-3">
-                           Road Closed
+                        <div class="badge badge-danger fs-20 font-weight-bold mb-3">
+                           Bridge Not Safe To Use Therefore Road Closed
                        </div>
                         </h1>
                         <p class="fs-13 text-muted mb-0">
@@ -92,6 +93,11 @@
                         <div class="mb-4 fs-15" style="border: 1px solid #dbdbdb;padding: 22px; border-top: none;">
                         <h1 class="font-weight-600 mb-1">
                         Water Level:<?=$result['Water_Level'];?>
+                        </h1>
+                        </div>
+                        <div class="mb-4 fs-15" style="border: 1px solid #dbdbdb;padding: 22px; border-top: none;">
+                        <h1 class="font-weight-600 mb-1">
+                        Crack Depth:<?=$result['Water_Level'];?>
                         </h1>
                         </div>
                       </div>

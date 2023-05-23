@@ -90,6 +90,7 @@ include 'head.php';
                             <th>
                               <h6>#</h6>
                             </th>
+                            
                             <th>
                               <h6>Bridge Name</h6>
                             </th>
@@ -112,24 +113,26 @@ include 'head.php';
                           $serial = 1;
                           while ($row = $all_bridges->fetch_assoc()) { ?>
                             <tr>
+                              
                               <td>
                                 <?= $serial; ?>
                               </td>
                               <td>
-                                <?= substr($row['Name'], 0, 40); ?>
+                                <p> <a href="../pages/single-bridge.php?id=<?= $row['BridgeID']; ?>">
+                                <?= substr($row['Name'], 0, 40); ?> </a></p>
+                              </td>
+                              <td> <p><a href="../pages/single-bridge.php?id=<?= $row['BridgeID']; ?>">
+                                <?= substr($row['Location'], 0, 40); ?> </a> </p>
                               </td>
                               <td>
-                                <?= substr($row['Location'], 0, 40); ?>
-                              </td>
-                              <td>
-                              <p><a href="#0">
-                                  <?= $row['BridgeStatus']; ?>
-                                </a></p>
+                              <p> <a href="../pages/single-bridge.php?id=<?= $row['BridgeID']; ?>">
+                                  <?= $row['BridgeStatus']; ?> </a>
+                                </p>
                             </td>
                             <td>
-                              <p><a href="#0">
-                                  <?= $row['RoadStatus']; ?>
-                                </a></p>
+                              <p><a href="../pages/single-bridge.php?id=<?= $row['BridgeID']; ?>">
+                                  <?= $row['RoadStatus']; ?></a>
+                                </p>
                             </td>
                             <td>
                                 <div class="action">
