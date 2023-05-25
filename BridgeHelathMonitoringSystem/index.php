@@ -48,7 +48,7 @@ include('include/menu_bar.php');
               <img src="upload/<?= $row['AttachmentName']; ?>" alt="banner" class="img-fluid" />
               <div class="banner-content" style="background-color: #00000085;">
                 <div class="badge badge-danger fs-12 font-weight-bold mb-3">
-                  Road Closed
+                  ROAD    <?= $row['RoadStatus'] ?>
                 </div>
                 
                 <h1 class="mb-0">
@@ -60,7 +60,7 @@ include('include/menu_bar.php');
                 <div class="fs-22">
                   <!-- <span class="mr-2">Date </span> -->
                   <div class="badge badge-danger fs-22 font-weight-bold mb-3">
-                BRIDGE NOT SAFE TO USE
+                  BRIDGE <?= $row['BridgeStatus']?> 
                 </div>
                 </div>
                 
@@ -88,7 +88,7 @@ include('include/menu_bar.php');
                     <div class="fs-12">
                       <span class="mr-2">Road Status </span>
                       <div class="badge badge-danger fs-12 font-weight-bold mb-3">
-                           Road Closed
+                      <?= $row['RoadStatus'] ?>
                 </div>
                     </div>
                   </div>

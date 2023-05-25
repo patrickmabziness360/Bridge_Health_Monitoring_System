@@ -3,7 +3,7 @@ include '../common/access.php';
 include '../common/db_connect.php';
 
 
-$all_bridges = $conn->query("SELECT * FROM bridge.tblBridge    ORDER BY CreatedAt DESC;");
+$all_bridges = $conn->query("SELECT B.*,D.* FROM bridge.tblBridge  B INNER JOIN bridge.tblBridgeSensorData D ON B.BridgeID=D.BridgeID  GROUP BY D.BridgeID  ORDER BY D.CreatedAt DESC ;");
 ?>
 
 <!DOCTYPE html>

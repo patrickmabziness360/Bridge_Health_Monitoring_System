@@ -6,8 +6,7 @@
   ////GET  NEWS/////
   if (isset($_GET['id']) && !empty($_GET['id'])) {
     $id = $_GET['id'];
-    $bridge_information = $conn->query("SELECT LTP.*, LTPF.Caption,LTPF.AttachmentName,d.VibrationLevels,d.RoadStatus,d.BridgeStatus FROM bridge.tblBridge LTP INNER JOIN bridge.tblBridgeImages LTPF ON LTP.BridgeID = LTPF.BridgeID 
-    INNER JOIN bridge.tblBridgeSensorData d ON LTP.BridgeID = d.BridgeID WHERE LTP.BridgeID =$id ORDER BY CreatedAt DESC LIMIT 1;");
+    $bridge_information = $conn->query("SELECT LTP.*, LTPF.Caption,LTPF.AttachmentName FROM bridge.tblBridge LTP LEFT JOIN bridge.tblBridgeImages LTPF ON LTP.BridgeID = LTPF.BridgeID WHERE LTP.BridgeID =$id;");
     $result = $bridge_information -> fetch_assoc();
 
   }else{
@@ -59,27 +58,15 @@
                         <h1 class="font-weight-600 mb-1">
                         Bridge Name : <?=$result['Name'];?>
                         </h1>
-                        <h1 class="font-weight-60 mb-1">
-                        Location : <?=$result['Location'];?>
-                        </h1>
                         <h1 class="font-weight-600 mb-1">
                       
                         <div class="badge badge-danger fs-20 font-weight-bold mb-3">
-                           ROAD <?=$result['RoadStatus'];?>
+                           Bridge Not Safe To Use Therefore Road Closed
                        </div>
                         </h1>
                         <p class="fs-13 text-muted mb-0">
                           <span class="mr-2">Date -</span><?=date('d F Y', strtotime($result['CreatedAt']));?>
                         </p>
-
-                        <div class="mb-4 fs-15" style="border: 1px solid #dbdbdb;padding: 22px; border-top: none;">
-                        <h1 class="font-weight-400 mb-1">
-                        DUE TO THE FOLLOWING REASONS : 
-                        </h1>
-                        <h3 class="font-weight-600 mb-1">
-                        Location : <?=$result['Location'];?>
-                        </h3>
-                        </div>
                         <div class="rotate-img">
                           <img
                             src="<?=$relative_path;?>upload/<?=$result['AttachmentName'];?>"
@@ -87,7 +74,32 @@
                             class="img-fluid mt-4 mb-4"
                           />
                         </div>
-                        
+                        <div class="mb-4 fs-15" style="border: 1px solid #dbdbdb;padding: 22px; border-top: none;">
+                        <h1 class="font-weight-600 mb-1">
+                        Location : <?=$result['Location'];?>
+                        </h1>
+                        </div>
+                       
+                        <div class="mb-4 fs-15" style="border: 1px solid #dbdbdb;padding: 22px; border-top: none;">
+                        <h1 class="font-weight-600 mb-1">
+                        Accelerometer : <?=$result['Accelerometer'];?>
+                        </h1>
+                        </div>
+                        <div class="mb-4 fs-15" style="border: 1px solid #dbdbdb;padding: 22px; border-top: none;">
+                        <h1 class="font-weight-600 mb-1">
+                        Vibrations:<?=$result['Vibrations'];?>
+                        </h1>
+                        </div>
+                        <div class="mb-4 fs-15" style="border: 1px solid #dbdbdb;padding: 22px; border-top: none;">
+                        <h1 class="font-weight-600 mb-1">
+                        Water Level:<?=$result['Water_Level'];?>
+                        </h1>
+                        </div>
+                        <div class="mb-4 fs-15" style="border: 1px solid #dbdbdb;padding: 22px; border-top: none;">
+                        <h1 class="font-weight-600 mb-1">
+                        Crack Depth:<?=$result['Water_Level'];?>
+                        </h1>
+                        </div>
                       </div>
                     </div>
 

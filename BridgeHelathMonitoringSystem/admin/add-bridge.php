@@ -1,6 +1,6 @@
 <?php
-include '../common/access.php';
-include '../common/db_connect.php';
+  include '../common/access.php';
+  include '../common/db_connect.php';
 
 global $postid;
 if (isset($_POST['editpost'])) {
@@ -22,6 +22,7 @@ if (isset($_POST['editpost'])) {
                 $location_error = $bridgename_error = '';
                 $location = $row["Location"];
                 $bridgename = $row["Name"];
+                $api = $row["api_key_value"];
                 }
         }
     
@@ -45,7 +46,8 @@ if (isset($_POST['saveChanges'])) {
 
     $location = isset($_POST['location'])? mysqli_real_escape_string($conn,$_POST['location']): '';
     $bridgename = isset($_POST['bridgename'])? mysqli_real_escape_string($conn,$_POST['bridgename']): '';
-    
+    $api_key = isset($_POST['api'])? mysqli_real_escape_string($conn,$_POST['api']): '';
+
     ///validate all variables//
     if (!empty($location) && !empty($bridgename)) {
 
@@ -56,7 +58,7 @@ if (isset($_POST['saveChanges'])) {
         }
         else{
              //////Add records to database//////
-            $insert_data = $conn->query("INSERT INTO bridge.tblBridge ( Location, Name) VALUES ('$location','$bridgename');");
+            $insert_data = $conn->query("INSERT INTO bridge.tblBridge ( Location, Name,api_key_value) VALUES ('$location','$bridgename','$api_key');");
             //////Get the PostID///////
             $post_id = $conn->query("SELECT BridgeID FROM bridge.tblBridge ORDER BY CreatedAt DESC LIMIT 1;");
             $post_id = $post_id->fetch_assoc()['BridgeID'];
@@ -101,6 +103,7 @@ if (isset($_POST['saveChanges'])) {
     }else{
       $location_error = empty($location)?'Cannot be blank!':'';
       $bridgename_error = empty($bridgename)?'Cannot be blank!':'';
+      $api_error = empty($api)?'Cannot be blank!':'';
     }
   }
    //// Update a post//////
@@ -209,6 +212,17 @@ if (isset($_POST['saveChanges'])) {
                         </div>
                         <?php if (!empty($location_error)) {?>
                           <div class="text-danger" style="margin-top: -20px;margin-bottom: 20px"><b><?=$location_error;?></b></div>
+                        <?php }?>
+                      </div>
+
+                      <div class="col-md-6">
+                        <div class="input-style-2">
+                          <label><h5>API KEY</h5></label>
+                          <input name="api" id="api" type="text" placeholder="API key" value="<?=!empty($api)?$api:'';?>" />
+                          <span class="icon"> <i class="lni lni-pencil"></i> </span>
+                        </div>
+                        <?php if (!empty($api_error)) {?>
+                          <div class="text-danger" style="margin-top: -20px;margin-bottom: 20px"><b><?=$api_error;?></b></div>
                         <?php }?>
                       </div>
 

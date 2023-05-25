@@ -1,58 +1,66 @@
 <?php
 
-//include '../common/access.php';
 include '../common/db_connect.php';
 
-
-// Keep this API Key value to be compatible with the ESP8266 code provided in the project page. 
-// If you change this value, the ESP8266 sketch needs to match
+// api key for this sensor 
 $api_key_value = "tPmAT5Ab3j7F9";
 
-$api_key= $sensorName = $location = $waterlevel = $crackDepth = $vibration = "";
+    
+    // BridgeID,
+    // VibrationLevels,
+    // StrainOnBridge, 
+    // Water_Level,
+    // Accelerometer, 
+    // CrackDepth,
+    // RoadStatus ,
+    // BridgeStatus ,
+
+
+$api_key= $VibrationLevels = $StrainOnBridge = $Water_Level = $Accelerometer = $crackDepth = $RoadStatus = $BridgeStatus = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $api_key = test_input($_POST["api_key"]);
-    if($api_key == $api_key_value) {
+    
+        // Select the bridge ID based on the API key
+        $select_bridge = $conn->query("SELECT bridgeID,api_key_value FROM bridge.tblbridge WHERE api_key_value = '".$api_key."'");
 
-       // $bridgeID = test_input($_POST["BridgeID"]);
-        //$Cordinates = test_input($_POST["Cordinates"]);
-        $sensorName = test_input($_POST["sensorName"]);
-        $location = test_input($_POST["location"]);
-        $ultrasonic = test_input($_POST["waterlevel"]);
-        $vibration = test_input($_POST["waterlevel"]);
-        $waterlevel = test_input($_POST["waterlevel"]);
-        // $Water_Level = test_input($_POST["Water_Level"]);
-        // $Accelerometer = test_input($_POST["Accelerometer"]);
-        // $Crack = test_input($_POST["Crack"]);
-        // $RoadStatus = test_input($_POST["RoadStatus"]);
-        // $BridgeStatus = test_input($_POST["BridgeStatus"]);
-        // $CreatedAt = test_input($_POST["CreatedAt"]);
-        
-        
-        // Create connection
-        // $conn = new mysqli($servername, $username, $password, $dbname);
-        // // Check connection
-        // if ($conn->connect_error) {
-        //     die("Connection failed: " . $conn->connect_error);
-        // } 
-        
-        //$sql = "INSERT INTO testtable (sensorName,location,ultrasonic,vibration)
-        //VALUES ('" . $sensorName . "', '" . $location . "','" . $ultrasonic . "', '" . $vibration . "')";
-        $insert_data = $conn->query("INSERT INTO bridge.testtable (sensorName,location,ultrasonic,vibration)
-        VALUES ('" . $sensorName . "', '" . $location . "','" . $ultrasonic . "', '" . $vibration . "')");
+        if ($select_bridge->num_rows > 0) {
 
-        if ($insert_data === TRUE) {
-            echo "New record created successfully";
-        } 
-        else {
+            $row = $select_bridge->fetch_assoc();
+            $bridgeID = $row["bridgeID"];
+            $api_key_value = $row["api_key_value"];
+
+
+            if($api_key == $api_key_value) {
+
+                // $bridgeID = test_input($_POST["BridgeID"]);
+                 $VibrationLevels = test_input($_POST["vibration"]);
+                 $StrainOnBridge = test_input($_POST["strain"]);
+                 $Water_Level = test_input($_POST["waterlevel"]);
+                 $Accelerometer = test_input($_POST["accelometer"]);
+                 $crackDepth = test_input($_POST["crackDepth"]);
+                 $RoadStatus = test_input($_POST["roadStatus"]);
+                 $BridgeStatus = test_input($_POST["bridgeStatus"]);
+          
+
+            // Insert the data into the tblbridgesensordata
+            $insert_data = $conn->query("INSERT INTO bridge.tblbridgesensordata (bridgeID,VibrationLevels, StrainOnBridge, Water_Level, 
+            Accelerometer,CrackDepth, RoadStatus,BridgeStatus)
+            VALUES ('" . $bridgeID . "', '" . $VibrationLevels . "', '" . $StrainOnBridge . "','" . $Water_Level . "', '" . $Accelerometer . "'
+            , '" . $crackDepth . "', '" . $RoadStatus . "', '" . $BridgeStatus . "')");
+
+            if ($insert_data === TRUE) {
+                echo "New record created successfully";
+            } else {
             echo "Error: " . $sql . "<br>" . $conn->error;
-        }
+            }
       
     }
     else {
         echo "Wrong API Key provided.";
     }
 
+    }
 }
 else {
     echo "No data posted with HTTP POST.";

@@ -6,6 +6,7 @@ include '../common/db_connect.php';
 <!DOCTYPE html>
 <html lang="en">
 <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+
 <?php
 include 'head.php';
 ?>
@@ -211,7 +212,8 @@ include 'head.php';
 
     }
 
-    $all_bridges = $conn->query("SELECT * FROM bridge.tblBridge WHERE BridgeStatus ='Critical';");
+    $all_bridges = $conn->query("SELECT B.*,D.RoadStatus,D.BridgeStatus FROM bridge.tblBridge B INNER JOIN bridge.tblBridgeSensorData D ON B.BridgeID =D.BridgeID WHERE 
+    D.RoadStatus='CLOSED';");
     $all_bridges_Count = $conn->query("SELECT * FROM bridge.tblBridge;");
     $all_users_sql = "SELECT * FROM bridge.tblUsers;";
     $all_users = $conn->query($all_users_sql);
