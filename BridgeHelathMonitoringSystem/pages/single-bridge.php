@@ -65,7 +65,7 @@
                         <h1 class="font-weight-600 mb-1">
                       
                         <div class="badge badge-danger fs-20 font-weight-bold mb-3">
-                           ROAD <?=$result['RoadStatus'];?>
+                           
                        </div>
                         </h1>
                         <p class="fs-13 text-muted mb-0">

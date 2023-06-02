@@ -18,7 +18,7 @@ CREATE TABLE `tblBridgeSensorData` (
   `Accelerometer` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `CrackDepth` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `RoadStatus` enum('OPENED','CLOSED') CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT 'OPENED',
-  `BridgeStatus` enum('NOT SAFE TO USE','SAFE TO USE') CHARACTER SET utf8 COLLATE utf8_unicode_ci  DEFAULT 'SAFE TO USE',
+  `d` enum('NOT SAFE TO USE','SAFE TO USE') CHARACTER SET utf8 COLLATE utf8_unicode_ci  DEFAULT 'SAFE TO USE',
   `CreatedAt` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`ID`),
   CONSTRAINT `tblBridgeSensorData` FOREIGN KEY (`BridgeID`) REFERENCES `tblBridge` (`BridgeID`) ON DELETE CASCADE ON UPDATE CASCADE

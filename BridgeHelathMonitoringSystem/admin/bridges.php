@@ -118,19 +118,19 @@ include 'head.php';
                                 <?= $serial; ?>
                               </td>
                               <td>
-                                <p> <a href="../pages/single-bridge.php?id=<?= $row['BridgeID']; ?>">
+                                <p> <a href="SensorDetails.php?id=<?= $row['BridgeID']; ?>">
                                 <?= substr($row['Name'], 0, 40); ?> </a></p>
                               </td>
-                              <td> <p><a href="../pages/single-bridge.php?id=<?= $row['BridgeID']; ?>">
+                              <td> <p><a href="trial.php?id=<?= $row['BridgeID']; ?>">
                                 <?= substr($row['Location'], 0, 40); ?> </a> </p>
                               </td>
                               <td>
-                              <p> <a href="../pages/single-bridge.php?id=<?= $row['BridgeID']; ?>">
+                              <p> <a href="SensorDetails.php?id=<?= $row['BridgeID']; ?>">
                                   <?= $row['BridgeStatus']; ?> </a>
                                 </p>
                             </td>
                             <td>
-                              <p><a href="../pages/single-bridge.php?id=<?= $row['BridgeID']; ?>">
+                              <p><a href="SensorDetails.php?id=<?= $row['BridgeID']; ?>">
                                   <?= $row['RoadStatus']; ?></a>
                                 </p>
                             </td>

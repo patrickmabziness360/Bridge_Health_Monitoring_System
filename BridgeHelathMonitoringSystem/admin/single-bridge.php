@@ -3,7 +3,7 @@
 
   $relative_path = '../';
   include ('../common/db_connect.php');
-  ////GET  NEWS/////
+ 
   if (isset($_GET['id']) && !empty($_GET['id'])) {
     $id = $_GET['id'];
     $bridge_information = $conn->query("SELECT LTP.*, LTPF.Caption,LTPF.AttachmentName FROM bridge.tblBridge LTP LEFT JOIN bridge.tblBridgeImages LTPF ON LTP.BridgeID = LTPF.BridgeID WHERE LTP.BridgeID =$id;");

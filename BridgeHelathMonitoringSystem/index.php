@@ -10,15 +10,13 @@ include('include/menu_bar.php');
 <div class="flash-news-banner">
   <div class="container">
     <div class="d-lg-flex align-items-center justify-content-between">
-      <div class="d-flex align-items-center">
-
-      </div>
+    
       <span>
          Bridge Health Monitoring System(BHMS)
       </span>
-      <span>
+      <!-- <span>
          Group 14
-      </span>
+      </span> -->
 
       <div class="d-flex">
         
