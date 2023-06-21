@@ -209,11 +209,16 @@ include 'head.php';
       }
 
 
-
+      
     }
+    $critical_bridges= $conn->query("SELECT B.*, D.* FROM bridge.tblBridge B
+    LEFT JOIN bridge.tblBridgeSensorData D ON B.BridgeID = D.BridgeID
+    WHERE D.BridgeStatus = 'NOT SAFE TO USE'
+        AND D.CreatedAt >= DATE_SUB(NOW(), INTERVAL 5 SECOND)
+    GROUP BY B.BridgeID
+    ORDER BY D.CreatedAt DESC;
+    ");
 
-    $all_bridges = $conn->query("SELECT B.*,D.RoadStatus,D.BridgeStatus FROM bridge.tblBridge B INNER JOIN bridge.tblBridgeSensorData D ON B.BridgeID =D.BridgeID WHERE 
-    D.RoadStatus='CLOSED';");
     $all_bridges_Count = $conn->query("SELECT * FROM bridge.tblBridge;");
     $all_users_sql = "SELECT * FROM bridge.tblUsers;";
     $all_users = $conn->query($all_users_sql);
@@ -279,59 +284,88 @@ include 'head.php';
                   </div>
                   <div class="table-wrapper table-responsive">
                    
-                      <button class="btn primary-btn" data-bs-toggle="modal">
-                           Critical Bridges</button>
+                  <h2 class="text-danger" data-bs-toggle="modal">Critical Bridges</h2>
                     
-                    <table class="table">
-                      <thead>
-                        <tr>
-                          <th class="lead-info">
-                            <h6>Bridge Name</h6>
-                          </th>
-                          <th class="lead-email">
-                            <h6>Location</h6>
-                          </th>
-                          <th class="lead-phone">
-                            <h6>Status</h6>
-                          </th>
-                          <th class="lead-company">
-                            <h6>Road Status</h6>
-                          </th>
-                          <th>
-                            <h6>Action</h6>
-                          </th>
-                        </tr>
-                        <!-- end table row-->
-                      </thead>
-                      <tbody>
-                        <?php
-                        while ($row = $all_bridges->fetch_assoc()) { ?>
+                  <table id="table" class="table">
+                        <thead>
                           <tr>
-                            <td>
-                              <div class="lead">
-                                <div class="lead-text">
-                                  <p>
-                                    <?= $row['Name']; ?>
-                                  </p>
-                                </div>
-                              </div>
-                            </td>
-                            <td>
-                              <p><a href="#0">
-                                  <?= $row['Location']; ?>
-                                </a></p>
-                            </td>
-                            <td>
-                              <p>
-                                <?= $row['BridgeStatus']; ?>
-                              </p>
-                            </td>
-                            <td>
-                              <?= $row['RoadStatus']; ?>
-                            </td>
-                            <td>
+                            
+                            
+                            <th>
+                              <h6>Bridge Name</h6>
+                            </th>
+                            <th>
+                              <h6>Location</h6>
+                            </th>
+                            <th>
+                              <h6>Sensor Status</h6>
+                            </th>
+                            <th>
+                              <h6>Bridge Status</h6>
+                            </th>
+                            <th>
+                              <h6> Last Active </h6>
+                            </th>
+                            <th data-type="date" data-format="YYYY/MM/DD">
+                              <h6>Action</h6>
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <?php
+                          $serial = 1;
+                          while ($row = $critical_bridges->fetch_assoc()) { ?>
+                            <tr>
+                              
+                            
+                              <td>
+                                <p> <a href="SensorDetails.php?id=<?= $row['BridgeID']; ?>">
+                                <?= substr($row['Name'], 0, 40); ?> </a></p>
+                              </td>
+                              <td> <p><a href="SensorDetails.php?id=<?= $row['BridgeID']; ?>">
+                                <?= substr($row['Location'], 0, 40); ?> </a> </p>
+                              </td>
 
-                             
+
+                              <td>
+                              
+                                  <?php
+                                    $date = $conn->query("SELECT NOW() AS date");
+                                    $date = $date->fetch_assoc()['date'];
+                                    $currentTime = strtotime($date);
+                                    
+                                    $createdAt = $row['CreatedAt'];
+      
+                                      if ($createdAt === null || ($currentTime - strtotime($createdAt)) > 10) {
+                                        echo '<p class="badge fs-12 font-weight-bold mb-3 text-danger">Offline</p>';
+                                      } else {
+                                        echo '<p class="badge fs-12 font-weight-bold mb-3 text-success">Online</p>';
+                                      }
+                                  ?>
+                            </td>
+
+                              <!-- <td>
+                              <p> <a href="SensorDetails.php?id=<?= $row['BridgeID']; ?>">
+                                  <?= $row['BridgeStatus']; ?> </a>
+                                </p>
+                            </td> -->
+                            <td>
+                            <p>
+                              <a href="SensorDetails.php?id=<?= $row['BridgeID']; ?>">
+                                  <span class="<?= ($row['BridgeStatus'] == 'NOT SAFE TO USE') ? 'text-danger badge fs-12 font-weight-bold' : 'text-success badge fs-12 font-weight-bold' ?>">
+                                      <?= $row['BridgeStatus']; ?>
+                                  </span>
+                              </a>
+                          </p>
+
+                            </td>
+                            <td>
+                              
+                              <p><a href="SensorDetails.php?id=<?= $row['BridgeID']; ?>">
+                                  <?= $row['CreatedAt']; ?></a>
+                                </p>
+                            </td>
+                            <td>
                                 <div class="action">
                                   <form class="text-primary"
                                     action="add-bridge.php?action=editPost&amp;qwert=<?php echo $row['BridgeID']; ?>"
@@ -340,120 +374,40 @@ include 'head.php';
                                     <button type="submit" name="editpost" class="lni lni-pencil"></button>
 
                                   </form>
-                                 
+                                  | <button class="text-danger" data-bs-toggle="modal"
+                                    data-bs-target="#deleteModal<?= $row['BridgeID']; ?>"><i class="lni lni-trash-can"></i>
+                                  </button>
                                 </div>
-                            
+                              </td>
 
-                            </td>
-                            <!-- Edit Modal -->
-                            <div class="modal fade" id="editModal<?= $row['UserName']; ?>" tabindex="-1"
-                              aria-labelledby="exampleModalLabel" aria-hidden="true">
-                              <div class="modal-dialog">
-                                <div class="modal-content">
-                                  <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Edit Bridge</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                      aria-label="Close"></button>
-                                  </div>
-                                  <div class="modal-body">
-                                    <form action="index.php" method="post" autocomplete="off">
-                                      <div class="form-group <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>">
-                                        <input type="hidden" name="userid" class="form-control"
-                                          value="<?php echo $row['UserID']; ?>">
-                                        <label>Username</label>
-                                        <input type="text" name="username" class="form-control"
-                                          value="<?php echo $row['UserName']; ?>">
-                                        <span class="text-danger">
-                                          <?php echo $username_err; ?>
-                                        </span>
-                                      </div>
-
-                                      <div class="form-group <?php echo (!empty($email_err)) ? 'has-error' : ''; ?>">
-                                        <label>Email</label>
-                                        <input type="email" name="email" class="form-control"
-                                          value="<?php echo $row['Email']; ?>">
-                                        <span class="text-danger">
-                                          <?php echo $email_err; ?>
-                                        </span>
-                                      </div>
-
-
-                                      <div class="form-group <?php echo (!empty($role_err)) ? 'has-error' : ''; ?>">
-                                        <label>Role</label>
-                                        <select name="role" class="form-control">
-                                          <option selected disabled hidden>--Select--</option>
-                                          <?php
-                                          $all_user_roles = $conn->query("SELECT * FROM bridge.tblRoles;");
-                                          while ($row2 = $all_user_roles->fetch_assoc()) { ?>
-                                            <option <?php if ($row['RoleName'] == $row2['RoleName'])
-                                              echo "selected"; ?>
-                                              value="<?= $row2['RoleID'] ?>"><?= $row2['RoleName'] ?></option>
-                                          <?php }
-                                          ?>
-                                        </select>
-                                        <span class="text-danger">
-                                          <?php echo $role_err; ?>
-                                        </span>
-                                      </div>
-                                      <div class="form-group <?php echo (!empty($password_err)) ? 'has-error' : ''; ?>">
-                                        <label>Password</label>
-                                        <input type="password" name="password" class="form-control"
-                                          value="<?php echo $password; ?>">
-                                        <span class="text-danger">
-                                          <?php echo $password_err; ?>
-                                        </span>
-                                      </div>
-                                      <div
-                                        class="form-group <?php echo (!empty($confirm_password_err)) ? 'has-error' : ''; ?>">
-                                        <label>Confirm Password</label>
-                                        <input type="password" name="confirm_password" class="form-control"
-                                          value="<?php echo $confirm_password; ?>">
-                                        <span class="text-danger">
-                                          <?php echo $confirm_password_err; ?>
-                                        </span>
-
-                                      </div>
-                                      <div class="form-group">
-                                        <button type="submit" class="btn btn-primary" name="edit_user">Update</button>
+                              <!-- Delete Modal -->
+                              <div class="modal fade" id="deleteModal<?= $row['BridgeID']; ?>" tabindex="-1"
+                                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                  <div class="modal-content">
+                                    
+                                    <div class="modal-body">
+                                      Are you sure you want to delete <b>
+                                        <?= $row['Name']; ?>
+                                      </b>
+                                    </div>
+                                    <div class="modal-footer">
+                                      <form action="bridges.php" method="post">
+                                        <button type="submit" name="delete_post" class="btn btn-primary">Yes</button>
+                                        <input type="hidden" name="postid" value="<?= $row['BridgeID']; ?>">
                                         <button type="button" class="btn btn-secondary"
-                                          data-bs-dismiss="modal">Cancel</button>
-                                      </div>
-                                    </form>
+                                          data-bs-dismiss="modal">No</button>
+                                      </form>
+                                    </div>
                                   </div>
                                 </div>
                               </div>
-                            </div>
-                            <!-- Delete Modal -->
-                            <!-- <div class="modal fade" id="deleteModal<?= $row['UserName']; ?>" tabindex="-1"
-                              aria-labelledby="exampleModalLabel" aria-hidden="true">
-                              <div class="modal-dialog">
-                                <div class="modal-content">
-                                  <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Delete User</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                      aria-label="Close"></button>
-                                  </div>
-                                  <div class="modal-body">
-                                    Are you sure you want to delete <b>
-                                      <?= $row['UserName']; ?>
-                                    </b>
-                                  </div>
-                                  <div class="modal-footer">
-                                    <form action="index.php" method="post">
-                                      <button type="submit" name="delete_user" class="btn btn-primary">Yes</button>
-                                      <input type="hidden" name="username" value="<?= $row['UserName']; ?>">
-                                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
-                                    </form>
-                                  </div>
-                                </div>
-                              </div>
-                            </div> -->
-                          </tr>
-                        <?php }
 
-                        ?>
-                      </tbody>
-                    </table>
+                            </tr>
+                          <?php }
+                          ?>
+                        </tbody>
+                      </table>
                     <!-- end table -->
                   </div>
                 </div>

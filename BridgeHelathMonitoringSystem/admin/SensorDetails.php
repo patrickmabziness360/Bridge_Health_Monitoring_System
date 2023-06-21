@@ -3,6 +3,7 @@ session_start();
 $relative_path = '../';
 include ('../common/db_connect.php');
 
+header("refresh: 5"); // Refresh the page after 5 seconds
 
 
 
@@ -12,11 +13,24 @@ if ($conn->connect_error) {
 
 if (isset($_GET['id']) && !empty($_GET['id'])) {
     $id = $_GET['id'];
-    $bridge_information = $conn->query("SELECT LTP.*, LTPF.Caption,LTPF.AttachmentName FROM bridge.tblBridge LTP LEFT JOIN bridge.tblBridgeImages LTPF ON LTP.BridgeID = LTPF.BridgeID WHERE LTP.BridgeID =$id;");
-    $resultw = $bridge_information -> fetch_assoc();
+    $bridge_information2 = $conn->query("SELECT LTP.*, LTPF.Caption,LTPF.AttachmentName FROM bridge.tblBridge LTP LEFT JOIN bridge.tblBridgeImages LTPF ON LTP.BridgeID = LTPF.BridgeID WHERE LTP.BridgeID =$id;");
+    $resultw = $bridge_information2 -> fetch_assoc();
 
   }
-$sql = "SELECT ID, VibrationLevels, StrainOnBridge, Water_Level, Accelerometer,CrackDepth,CreatedAt FROM bridge.tblBridgeSensorData WHERE BridgeID =$id;";
+  if (isset($_GET['id']) && !empty($_GET['id'])) {
+    $id = $_GET['id'];
+    $bridge_information = $conn->query("SELECT CrackDepth,StrainOnBridge,Tilt FROM bridge.tblBridgeSensorData WHERE BridgeID =$id ORDER BY CreatedAt DESC LIMIT 1;");
+    $depestCrack = $bridge_information -> fetch_assoc();
+
+  }
+
+  // if (isset($_GET['id']) && !empty($_GET['id'])) {
+  //   $id = $_GET['id'];
+  //   $initialOriatationQuery = $conn->query("SELECT ZAccelerometer, YAccelerometer, XAccelerometer FROM bridge.tblBridgeSensorData WHERE BridgeID =$id ORDER BY CreatedAt DESC LIMIT 1;");
+  //   $initialOrriantaion = $initialOriatationQuery -> fetch_assoc();
+
+  //}
+$sql = "SELECT ID, VibrationLevels, StrainOnBridge, Water_Level,CrackDepth,TIME(CreatedAt) AS CreatedTime FROM bridge.tblBridgeSensorData WHERE BridgeID =$id ORDER BY CreatedAt DESC LIMIT 14;";
 
 $result = $conn->query($sql);
 
@@ -24,7 +38,7 @@ while ($data = $result->fetch_assoc()){
     $sensor_data[] = $data;
 }
 
-$readings_time = array_column($sensor_data, 'CreatedAt');
+$readings_time = array_column($sensor_data, 'CreatedTime');
 $value1 = json_encode(array_reverse(array_column($sensor_data, 'Water_Level')), JSON_NUMERIC_CHECK);
 $value2 = json_encode(array_reverse(array_column($sensor_data, 'VibrationLevels')), JSON_NUMERIC_CHECK);
 $value3 = json_encode(array_reverse(array_column($sensor_data, 'StrainOnBridge')), JSON_NUMERIC_CHECK);
@@ -32,13 +46,16 @@ $CreatedAt = json_encode(array_reverse($readings_time), JSON_NUMERIC_CHECK);
 
 
 $result->free();
-$conn->close();
+//$conn->close();
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 
-
+<head>
+  <!-- <meta http-equiv="refresh" content="3"> -->
+  <!-- endinject -->
+</head>
 <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
 <?php
 include 'head.php';
@@ -63,10 +80,10 @@ include 'head.php';
         <!-- ========== title-wrapper start ========== -->
         <div class="title-wrapper pt-30">
           <div class="row align-items-center">
-            <div class="col-md-6">
+            <div class="col-md-6 align-items-center">
               <div class="title mb-30">
-                <h2> <?=$resultw['Name'];?> Details</h2>
-                <h4>Location : <?=$resultw['Location'];?></h4>
+                <h2 class="text-center"> <?=$resultw['Name'];?> Details</h2>
+                <h4 class="text-center">Location : <?=$resultw['Location'];?></h4>
                 
               </div>
             </div>
@@ -82,7 +99,14 @@ include 'head.php';
 
                 <div class="tab-content" id="nav-tabContent2">
                   <div class="tab-pane fade show active" id="news">
-                    
+                  <span class="mr-3 text-primary">
+                  <?php
+                  $date = $conn->query("SELECT now() date");
+                  $date = $date->fetch_assoc()['date'];
+                  echo date('d F Y', strtotime($date));
+                 // $conn->close();
+                  ?>
+                 </span>
                     <div id="chart-waterleve" class="container"></div>
                     <div id="chart-humidity" class="container"></div>
                     <div id="chart-pressure" class="container"></div>
@@ -92,11 +116,95 @@ include 'head.php';
                   
                   
                 </div>
+
+                <?php
+                //   if ($depestCrack['CrackDepth'] > 18.0) {
+                //       echo "Deepest crack is " . $depestCrack['CrackDepth'];
+                //   } else {
+                //       echo "No crack";
+                //   }
+
+                //   if ($depestCrack['StrainOnBridge'] > 205) {
+                //     echo "Strain " . $depestCrack['StrainOnBridge'] . "Overload";
+                // } else {
+                //     echo "No Overload";
+                // }
+                //  echo " tilt ".$depestCrack['Tilt']."";
+                
+                ?>
               </div>
             
             </div>
           </div>
         </div>
+        
+      </div>
+    
+    </section>
+
+    <section class="table-components">
+      <div class="container-fluid">
+        <!-- ========== title-wrapper start ========== -->
+        <div class="title-wrapper pt-30">
+          <div class="row align-items-center">
+            <div class="col-md-6 align-items-center">
+              <!-- <div class="title mb-30">
+                <h2> <?=$resultw['Name'];?> Details</h2>
+                <h4>Location : <?=$resultw['Location'];?></h4>
+                
+              </div> -->
+            </div>
+            <!-- end col -->
+          </div>
+          <!-- end row -->
+        </div>
+        <!-- ========== title-wrapper end ========== -->
+        <div class="tabs-wrapper">
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="tab-style-2 card-style mb-30">
+
+                <div class="tab-content" id="nav-tabContent2">
+                  <div class="tab-pane fade show active" id="news">
+                  <span class="mr-3 text-primary">
+                  <?php
+                  $date = $conn->query("SELECT now() date");
+                  $date = $date->fetch_assoc()['date'];
+                  echo date('d F Y', strtotime($date));
+                  $conn->close();
+                  ?>
+                 </span>
+                    <div id="chart-waterleve" class="container"></div>
+                    <div id="chart-humidity" class="container"></div>
+                    <div id="chart-pressure" class="container"></div>
+
+                  
+                  </div>
+                  
+                  
+                </div>
+
+                <?php
+                //   if ($depestCrack['CrackDepth'] > 18.0) {
+                //       echo "Deepest crack is " . $depestCrack['CrackDepth'];
+                //   } else {
+                //       echo "No crack";
+                //   }
+
+                //   if ($depestCrack['StrainOnBridge'] > 205) {
+                //     echo "Strain " . $depestCrack['StrainOnBridge'] . "Overload";
+                // } else {
+                //     echo "No Overload";
+                // }
+                //  echo " tilt ".$depestCrack['Tilt']."";
+                
+                ?>
+              </div>
+            
+            </div>
+          </div>
+        </div>
+        
       </div>
     
     </section>
@@ -148,52 +256,52 @@ var chartT = new Highcharts.Chart({
   credits: { enabled: false }
 });
 
-var chartH = new Highcharts.Chart({
-  chart:{ renderTo:'chart-humidity' },
-  title: { text: 'Vibrations' },
-  series: [{
-    showInLegend: false,
-    data: value2
-  }],
-  plotOptions: {
-    line: { animation: false,
-      dataLabels: { enabled: true }
-    }
-  },
-  xAxis: {
-    type: 'datetime',
-    //dateTimeLabelFormats: { second: '%H:%M:%S' },
-    categories: CreatedAt
-  },
-  yAxis: {
-    title: { text: 'Vibrations' }
-  },
-  credits: { enabled: false }
-});
+// var chartH = new Highcharts.Chart({
+//   chart:{ renderTo:'chart-humidity' },
+//   title: { text: 'Vibrations' },
+//   series: [{
+//     showInLegend: false,
+//     data: value2
+//   }],
+//   plotOptions: {
+//     line: { animation: false,
+//       dataLabels: { enabled: true }
+//     }
+//   },
+//   xAxis: {
+//     type: 'datetime',
+//     //dateTimeLabelFormats: { second: '%H:%M:%S' },
+//     categories: CreatedAt
+//   },
+//   yAxis: {
+//     title: { text: 'Vibrations' }
+//   },
+//   credits: { enabled: false }
+// });
 
 
-var chartP = new Highcharts.Chart({
-  chart:{ renderTo:'chart-pressure' },
-  title: { text: 'Strain' },
-  series: [{
-    showInLegend: false,
-    data: value3
-  }],
-  plotOptions: {
-    line: { animation: false,
-      dataLabels: { enabled: true }
-    },
-    series: { color: '#18009c' }
-  },
-  xAxis: {
-    type: 'datetime',
-    categories: CreatedAt
-  },
-  yAxis: {
-    title: { text: 'Pressure (hPa)' }
-  },
-  credits: { enabled: false }
-});
+// var chartP = new Highcharts.Chart({
+//   chart:{ renderTo:'chart-pressure' },
+//   title: { text: 'Strain' },
+//   series: [{
+//     showInLegend: false,
+//     data: value3
+//   }],
+//   plotOptions: {
+//     line: { animation: false,
+//       dataLabels: { enabled: true }
+//     },
+//     series: { color: '#18009c' }
+//   },
+//   xAxis: {
+//     type: 'datetime',
+//     categories: CreatedAt
+//   },
+//   yAxis: {
+//     title: { text: 'Pressure (hPa)' }
+//   },
+//   credits: { enabled: false }
+// });
 
 </script>
 </body>

@@ -3,7 +3,15 @@ include '../common/access.php';
 include '../common/db_connect.php';
 
 
-$all_bridges = $conn->query("SELECT B.*,D.* FROM bridge.tblBridge  B INNER JOIN bridge.tblBridgeSensorData D ON B.BridgeID=D.BridgeID  GROUP BY D.BridgeID  ORDER BY D.CreatedAt DESC ;");
+$all_bridges = $conn->query("SELECT LTP.Name,LTP.BridgeID, LTP.Location, d.RoadStatus, d.BridgeStatus,d.CreatedAt
+FROM bridge.tblBridge LTP 
+LEFT JOIN (
+    SELECT BridgeID, RoadStatus, BridgeStatus, MAX(CreatedAt) AS MaxCreatedAt
+    FROM bridge.tblBridgeSensorData
+    GROUP BY BridgeID
+) AS maxSensorData ON LTP.BridgeID = maxSensorData.BridgeID
+LEFT JOIN bridge.tblBridgeSensorData d ON maxSensorData.BridgeID = d.BridgeID AND maxSensorData.MaxCreatedAt = d.CreatedAt
+ORDER BY d.CreatedAt DESC;");
 ?>
 
 <!DOCTYPE html>
@@ -87,9 +95,7 @@ include 'head.php';
                       <table id="table" class="table">
                         <thead>
                           <tr>
-                            <th>
-                              <h6>#</h6>
-                            </th>
+                            
                             
                             <th>
                               <h6>Bridge Name</h6>
@@ -98,10 +104,13 @@ include 'head.php';
                               <h6>Location</h6>
                             </th>
                             <th>
-                              <h6>Status</h6>
+                              <h6>Sensor Status</h6>
                             </th>
                             <th>
-                              <h6>Road Status</h6>
+                              <h6>Bridge Status</h6>
+                            </th>
+                            <th>
+                              <h6> Last Active </h6>
                             </th>
                             <th data-type="date" data-format="YYYY/MM/DD">
                               <h6>Action</h6>
@@ -114,24 +123,48 @@ include 'head.php';
                           while ($row = $all_bridges->fetch_assoc()) { ?>
                             <tr>
                               
-                              <td>
-                                <?= $serial; ?>
-                              </td>
+                            
                               <td>
                                 <p> <a href="SensorDetails.php?id=<?= $row['BridgeID']; ?>">
                                 <?= substr($row['Name'], 0, 40); ?> </a></p>
                               </td>
-                              <td> <p><a href="trial.php?id=<?= $row['BridgeID']; ?>">
+                              <td> <p><a href="SensorDetails.php?id=<?= $row['BridgeID']; ?>">
                                 <?= substr($row['Location'], 0, 40); ?> </a> </p>
                               </td>
+
+
                               <td>
-                              <p> <a href="SensorDetails.php?id=<?= $row['BridgeID']; ?>">
-                                  <?= $row['BridgeStatus']; ?> </a>
-                                </p>
+
+                              
+                              <?php
+                              $date = $conn->query("SELECT NOW() AS date");
+                              $date = $date->fetch_assoc()['date'];
+                              $currentTime = strtotime($date);
+                              
+                              $createdAt = $row['CreatedAt'];
+
+                                if ($createdAt === null || ($currentTime - strtotime($createdAt)) > 10) {
+                                  echo '<p class="badge fs-12 font-weight-bold mb-3 text-danger">Offline</p>';
+                                } else {
+                                  echo '<p class="badge fs-12 font-weight-bold mb-3 text-success">Online</p>';
+                                }
+                              ?>
+                            </td>
+
+                              
+                            <td>
+                            <p>
+                              <a href="SensorDetails.php?id=<?= $row['BridgeID']; ?>">
+                                  <span class="<?= ($row['BridgeStatus'] == 'NOT SAFE TO USE') ? 'text-danger badge fs-12 font-weight-bold' : 'text-success badge fs-12 font-weight-bold' ?>">
+                                      <?= $row['BridgeStatus']; ?>
+                                  </span>
+                              </a>
+                          </p>
                             </td>
                             <td>
+                              
                               <p><a href="SensorDetails.php?id=<?= $row['BridgeID']; ?>">
-                                  <?= $row['RoadStatus']; ?></a>
+                                  <?= $row['CreatedAt']; ?></a>
                                 </p>
                             </td>
                             <td>

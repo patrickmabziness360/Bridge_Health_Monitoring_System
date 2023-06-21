@@ -2,19 +2,6 @@
 
 include '../common/db_connect.php';
 
-// api key for this sensor 
-$api_key_value = "tPmAT5Ab3j7F9";
-
-    
-    // BridgeID,
-    // VibrationLevels,
-    // StrainOnBridge, 
-    // Water_Level,
-    // Accelerometer, 
-    // CrackDepth,
-    // RoadStatus ,
-    // BridgeStatus ,
-
 
 $api_key= $VibrationLevels = $StrainOnBridge = $Water_Level = $Accelerometer = $crackDepth = $RoadStatus = $BridgeStatus = "";
 
@@ -41,13 +28,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                  $crackDepth = test_input($_POST["crackDepth"]);
                  $RoadStatus = test_input($_POST["roadStatus"]);
                  $BridgeStatus = test_input($_POST["bridgeStatus"]);
-          
+                 $Tilt =test_input($_POST["tilt"]);
+                 
 
             // Insert the data into the tblbridgesensordata
             $insert_data = $conn->query("INSERT INTO bridge.tblbridgesensordata (bridgeID,VibrationLevels, StrainOnBridge, Water_Level, 
-            Accelerometer,CrackDepth, RoadStatus,BridgeStatus)
-            VALUES ('" . $bridgeID . "', '" . $VibrationLevels . "', '" . $StrainOnBridge . "','" . $Water_Level . "', '" . $Accelerometer . "'
-            , '" . $crackDepth . "', '" . $RoadStatus . "', '" . $BridgeStatus . "')");
+                                        Tilt,CrackDepth, RoadStatus,BridgeStatus)
+            VALUES ('" . $bridgeID . "', '" . $VibrationLevels . "', '" . $StrainOnBridge . "','" . $Water_Level . "', 
+                    '" . $Tilt . "', '" . $crackDepth . "', '" . $RoadStatus . "', '" . $BridgeStatus . "')");
 
             if ($insert_data === TRUE) {
                 echo "New record created successfully";

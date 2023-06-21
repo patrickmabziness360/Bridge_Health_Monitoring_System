@@ -15,10 +15,10 @@ CREATE TABLE `tblBridgeSensorData` (
   `VibrationLevels` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `StrainOnBridge` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `Water_Level` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
-  `Accelerometer` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
-  `CrackDepth` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `crackDepth` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `Tilt` enum('NO TILT','LITTLE TILT','MEDIUM TILT','HIGH TILT') CHARACTER SET utf8 COLLATE utf8_unicode_ci  DEFAULT 'NO TILT',
   `RoadStatus` enum('OPENED','CLOSED') CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT 'OPENED',
-  `d` enum('NOT SAFE TO USE','SAFE TO USE') CHARACTER SET utf8 COLLATE utf8_unicode_ci  DEFAULT 'SAFE TO USE',
+  `BridgeStatus` enum('NOT SAFE TO USE','SAFE TO USE') CHARACTER SET utf8 COLLATE utf8_unicode_ci  DEFAULT 'SAFE TO USE',
   `CreatedAt` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`ID`),
   CONSTRAINT `tblBridgeSensorData` FOREIGN KEY (`BridgeID`) REFERENCES `tblBridge` (`BridgeID`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -47,3 +47,4 @@ CREATE TABLE `tblUsers` (
 INSERT INTO `tblUsers` VALUES (1,'a','admin@gmail.com','$2y$10$AdEeKwZdIt1QWZ08P8.MwuTG8vd9RLQkyXzu1BjCsOcaXPnVOkdSy');
 
 
+DELETE FROM `tblbridgesensordata` WHERE ID>26

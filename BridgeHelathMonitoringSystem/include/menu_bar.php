@@ -25,14 +25,25 @@
       
       <?php
 
+      // $closest_bridge = $conn->query("SELECT LTP.*, LTPF.Caption,LTPF.AttachmentName,d.RoadStatus,d.BridgeStatus FROM bridge.tblBridge LTP INNER JOIN bridge.tblBridgeImages LTPF ON LTP.BridgeID = LTPF.BridgeID  INNER JOIN bridge.tblBridgeSensorData d
+      // ON LTP.BridgeID=D.BridgeID ORDER BY d.CreatedAt DESC LIMIT 1;");
 
-      $closest_bridge = $conn->query("SELECT LTP.*, LTPF.Caption,LTPF.AttachmentName,d.RoadStatus,d.BridgeStatus FROM bridge.tblBridge LTP INNER JOIN bridge.tblBridgeImages LTPF ON LTP.BridgeID = LTPF.BridgeID  INNER JOIN bridge.tblBridgeSensorData d
-      ON LTP.BridgeID=D.BridgeID ORDER BY CreatedAt DESC LIMIT 1;");
+    $closest_bridge = $conn->query("SELECT LTP.Name,LTP.Location,LTP.BridgeID,LTPF.Caption,LTPF.AttachmentName,d.Water_level,d.CrackDepth,d.VibrationLevels,d.RoadStatus,d.BridgeStatus,d.StrainOnBridge,d.CreatedAt,d.Tilt
+                                    FROM bridge.tblBridge LTP INNER JOIN bridge.tblBridgeImages LTPF ON LTP.BridgeID = LTPF.BridgeID 
+                                    INNER JOIN bridge.tblBridgeSensorData d ON LTP.BridgeID = d.BridgeID WHERE LTP.BridgeID =D.BridgeID ORDER BY d.CreatedAt DESC LIMIT 1;");
 
-      $nearestBridgesQuery = "SELECT LTP.*, LTPF.Caption,LTPF.AttachmentName,d.RoadStatus,d.BridgeStatus FROM bridge.tblBridge LTP INNER JOIN bridge.tblBridgeImages LTPF ON LTP.BridgeID = LTPF.BridgeID INNER JOIN bridge.tblBridgeSensorData d
-      ON LTP.BridgeID=D.BridgeID GROUP BY d.BridgeID ORDER BY LTP.CreatedAt DESC LIMIT 4;";
+
+      $nearestBridgesQuery = "SELECT LTP.Name,LTP.BridgeID,LTP.Location, LTPF.Caption, LTPF.AttachmentName, d.RoadStatus, d.BridgeStatus,d.CreatedAt
+                              FROM bridge.tblBridge LTP INNER JOIN bridge.tblBridgeImages LTPF ON LTP.BridgeID = LTPF.BridgeID
+                              LEFT JOIN (
+                                  SELECT BridgeID, RoadStatus, BridgeStatus, MAX(CreatedAt) AS MaxCreatedAt
+                                  FROM bridge.tblBridgeSensorData
+                                  GROUP BY BridgeID
+                              ) AS maxSensorData ON LTP.BridgeID = maxSensorData.BridgeID
+                              LEFT JOIN bridge.tblBridgeSensorData d ON maxSensorData.BridgeID = d.BridgeID AND maxSensorData.MaxCreatedAt = d.CreatedAt
+                              ORDER BY d.CreatedAt DESC
+                              LIMIT 3;";
       $nearestBridges = $conn->query($nearestBridgesQuery);
 
-      $recent_posts = $conn->query($nearestBridgesQuery);
-
+      
       ?>

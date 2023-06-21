@@ -1,13 +1,16 @@
 <?php
   session_start();
+  header("refresh: 5"); // Refresh the page after 5 seconds
 
   $relative_path = '../';
   include ('../common/db_connect.php');
   ////GET  NEWS/////
   if (isset($_GET['id']) && !empty($_GET['id'])) {
     $id = $_GET['id'];
-    $bridge_information = $conn->query("SELECT LTP.*, LTPF.Caption,LTPF.AttachmentName,d.VibrationLevels,d.RoadStatus,d.BridgeStatus FROM bridge.tblBridge LTP INNER JOIN bridge.tblBridgeImages LTPF ON LTP.BridgeID = LTPF.BridgeID 
-    INNER JOIN bridge.tblBridgeSensorData d ON LTP.BridgeID = d.BridgeID WHERE LTP.BridgeID =$id ORDER BY CreatedAt DESC LIMIT 1;");
+    $bridge_information = $conn->query("SELECT LTP.*, LTPF.Caption,LTPF.AttachmentName,d.Water_level,d.CrackDepth,d.VibrationLevels,
+    d.RoadStatus,d.BridgeStatus,d.StrainOnBridge
+     FROM bridge.tblBridge LTP INNER JOIN bridge.tblBridgeImages LTPF ON LTP.BridgeID = LTPF.BridgeID 
+    INNER JOIN bridge.tblBridgeSensorData d ON LTP.BridgeID = d.BridgeID WHERE LTP.BridgeID =$id ORDER BY d.CreatedAt DESC LIMIT 1;");
     $result = $bridge_information -> fetch_assoc();
 
   }else{
@@ -29,9 +32,7 @@
                   <span>
                     Bridge Health Monitoring System(BHMS)
                 </span>
-               <span>
-                Group 14
-               </span>
+               
                   
               <div class="d-flex">
                 <span class="mr-3 text-danger">
@@ -64,8 +65,8 @@
                         </h1>
                         <h1 class="font-weight-600 mb-1">
                       
-                        <div class="badge badge-danger fs-20 font-weight-bold mb-3">
-                           
+                        <div class="badge <?= ($result['RoadStatus'] == 'CLOSED') ? 'badge-danger' : 'badge-primary' ?> fs-20 font-weight-bold mb-3">
+                           ROAD <?=$result['RoadStatus'];?>
                        </div>
                         </h1>
                         <p class="fs-13 text-muted mb-0">
@@ -73,11 +74,34 @@
                         </p>
 
                         <div class="mb-4 fs-15" style="border: 1px solid #dbdbdb;padding: 22px; border-top: none;">
-                        <h1 class="font-weight-400 mb-1">
+                        <!-- <h1 class="font-weight-400 mb-1">
                         DUE TO THE FOLLOWING REASONS : 
-                        </h1>
+                        </h1> -->
                         <h3 class="font-weight-600 mb-1">
-                        Location : <?=$result['Location'];?>
+                        <!--  -->
+                        <?php
+
+                          if ($result['RoadStatus'] == 'CLOSED') {
+                            echo '<h1 class="font-weight-400 mb-1">DUE TO THE FOLLOWING REASONS:</h1>';
+                            
+                          // if ($result['VibrationLevels'] != 90000 ) {
+                          //     echo '<h3 class="font-weight-400 mb-1">High Vibrations</h3>';
+                          // } 
+                          if ($result['CrackDepth'] > 13.0) {
+                              echo '<h3>There exist a big crack which needs maintainance </h3>';
+                          } if ($result['Water_level'] > 600) {
+                            echo '<h3 class="font-weight-400 mb-1">High Water Level</h3>';
+                        }
+                        if ($result['StrainOnBridge'] > 1500) {
+                          echo '<h3 class="font-weight-400 mb-1">Overload</h3>';
+                         }
+
+                          } else {
+                            echo 'Bridge is safe to use.';
+                          }
+
+                          ?>
+
                         </h3>
                         </div>
                         <div class="rotate-img">
@@ -108,8 +132,8 @@
                                       </h5>
                                         <div class="fs-12">
                                         <span class="mr-2">Road Status </span>
-                                        <div class="badge badge-danger fs-12 font-weight-bold mb-3">
-                                            Road Closed
+                                        <div class="badge <?= ($row['RoadStatus'] == 'CLOSED') ? 'badge-danger' : 'badge-primary' ?> fs-12 font-weight-bold mb-3">
+                                        <?=$row['RoadStatus'];?>
                                   </div>
                                     </div>
                                     <div class="col-sm-5">
