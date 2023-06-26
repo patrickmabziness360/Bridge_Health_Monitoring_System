@@ -19,17 +19,22 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
   }
   if (isset($_GET['id']) && !empty($_GET['id'])) {
     $id = $_GET['id'];
-    $bridge_information = $conn->query("SELECT CrackDepth,StrainOnBridge,Tilt FROM bridge.tblBridgeSensorData WHERE BridgeID =$id ORDER BY CreatedAt DESC LIMIT 1;");
-    $depestCrack = $bridge_information -> fetch_assoc();
+    $bridge_information = $conn->query("SELECT CrackDepth,StrainOnBridge,Tilt,BridgeStatus,CreatedAt,RoadStatus,Water_level FROM bridge.tblBridgeSensorData WHERE BridgeID =$id ORDER BY CreatedAt DESC LIMIT 1;");
+    $info = $bridge_information -> fetch_assoc();
 
   }
+
+
+  $date = $conn->query("SELECT now() date");
+  $date = $date->fetch_assoc()['date'];
+  $currentTime = strtotime($date);
 
   // if (isset($_GET['id']) && !empty($_GET['id'])) {
   //   $id = $_GET['id'];
   //   $initialOriatationQuery = $conn->query("SELECT ZAccelerometer, YAccelerometer, XAccelerometer FROM bridge.tblBridgeSensorData WHERE BridgeID =$id ORDER BY CreatedAt DESC LIMIT 1;");
   //   $initialOrriantaion = $initialOriatationQuery -> fetch_assoc();
 
-  //}
+  // }
 $sql = "SELECT ID, VibrationLevels, StrainOnBridge, Water_Level,CrackDepth,TIME(CreatedAt) AS CreatedTime FROM bridge.tblBridgeSensorData WHERE BridgeID =$id ORDER BY CreatedAt DESC LIMIT 14;";
 
 $result = $conn->query($sql);
@@ -39,9 +44,7 @@ while ($data = $result->fetch_assoc()){
 }
 
 $readings_time = array_column($sensor_data, 'CreatedTime');
-$value1 = json_encode(array_reverse(array_column($sensor_data, 'Water_Level')), JSON_NUMERIC_CHECK);
-$value2 = json_encode(array_reverse(array_column($sensor_data, 'VibrationLevels')), JSON_NUMERIC_CHECK);
-$value3 = json_encode(array_reverse(array_column($sensor_data, 'StrainOnBridge')), JSON_NUMERIC_CHECK);
+$waterleveldata = json_encode(array_reverse(array_column($sensor_data, 'Water_Level')), JSON_NUMERIC_CHECK);
 $CreatedAt = json_encode(array_reverse($readings_time), JSON_NUMERIC_CHECK);
 
 
@@ -71,145 +74,140 @@ include 'head.php';
 
   <!-- ======== main-wrapper start =========== -->
   <main class="main-wrapper">
-    <!-- ========== header start ========== -->
-    
-    
-    <!-- ========== table components start ========== -->
-    <section class="table-components">
-      <div class="container-fluid">
-        <!-- ========== title-wrapper start ========== -->
-        <div class="title-wrapper pt-30">
-          <div class="row align-items-center">
-            <div class="col-md-6 align-items-center">
-              <div class="title mb-30">
-                <h2 class="text-center"> <?=$resultw['Name'];?> Details</h2>
-                <h4 class="text-center">Location : <?=$resultw['Location'];?></h4>
+                <!-- ========== header start ========== -->
                 
-              </div>
-            </div>
-            <!-- end col -->
-          </div>
-          <!-- end row -->
-        </div>
-        <!-- ========== title-wrapper end ========== -->
-        <div class="tabs-wrapper">
-          <div class="row">
-            <div class="col-lg-12">
-              <div class="tab-style-2 card-style mb-30">
+                
+                          <!-- ========== table components start ========== -->
+                          
+                      <section class="table-components">
+                        <div class="container-fluid">
+                          <!-- ========== title-wrapper start ========== -->
+                          <div class="title-wrapper pt-30 ">
+                            <div class="row align-items-center">
+                              <div class="col-md-6 align-items-center">
+                                <div class="title mb-30">
 
-                <div class="tab-content" id="nav-tabContent2">
-                  <div class="tab-pane fade show active" id="news">
-                  <span class="mr-3 text-primary">
-                  <?php
-                  $date = $conn->query("SELECT now() date");
-                  $date = $date->fetch_assoc()['date'];
-                  echo date('d F Y', strtotime($date));
-                 // $conn->close();
-                  ?>
-                 </span>
-                    <div id="chart-waterleve" class="container"></div>
-                    <div id="chart-humidity" class="container"></div>
-                    <div id="chart-pressure" class="container"></div>
+                                  <h6>Bridge Name : <span class="<?= $info['BridgeStatus'] === 'SAFE TO USE' ? 'text-success' : 'text-danger' ?>"> <?=$resultw['Name'];?> Details</span></h6>
+                                  <h6>Location : <span class="<?= $info['BridgeStatus'] === 'SAFE TO USE' ? 'text-success' : 'text-danger' ?>"> <?=$resultw['Location'];?> Details</span></h6>
+                                  <h6> Status : <span class="<?= $info['BridgeStatus'] === 'SAFE TO USE' ? 'text-success' : 'text-danger' ?>"> <?=$info['BridgeStatus'];?></span></h6>
 
-                  
+                                  <h6 class="text-enter">Date  :  <?=date('d F Y', strtotime($date));?></h6>
+                                  
+
+                                  <?php
+
+                                  $createdAt = $info['CreatedAt'];
+
+                                    if ($createdAt === null || ($currentTime - strtotime($createdAt)) > 10) {
+                                      echo "<h6 > Sensor  : <span class=\"text-danger\">  Offline - Since {$createdAt}</span> </h6>";
+                                    } else {
+                                      echo '<h6> Sensor  :<span class="text-success"> Online</span> <h6>';
+                                    }
+                                 ?>
+ 
+                                  <?php
+
+                                   if ($info['RoadStatus'] == 'CLOSED') {
+                                      echo '<h3 class="font-weight-400 mb-1">DUE TO :</31>';
+                                      
+                                    // if ($row['VibrationLevels'] != 90000 ) {
+                                    //     echo '<h3 class="font-weight-400 mb-1">High Vibrations</h3>';
+                                    // } 
+
+                                    if ($info['CrackDepth'] > 13.0) {
+                                        echo '<h3>There exist a big crack which needs maintainance </h3>';
+                                    } if ($info['Water_level'] > 50) {
+                                      echo '<h3 class="font-weight-400 mb-1">High Water Level</h3>';
+                                    }
+                                    if ($info['Tilt'] == "HIGH TILT") {
+                                    echo '<h3 class="font-weight-400 mb-1">The bridge is tilted</h3>';
+                                    }
+
+                                    } 
+
+                                    ?>
+                                
+                              </div>
+                            </div>
+                          </div>
+                          
+            <div class="row">
+              <div class="col-lg-4">
+                <div class="card-style mb-30">
+                  <div class="card-body" style="height: 250px;">
+                    <h5 class="card-title">Orientation Details</h5>
+                    <p class="card-text">The Bridge has: <span class="<?= $info['Tilt'] === 'HIGH TILT' ? 'text-danger' : 'text-success' ?>"><?= $info['Tilt'] ?></span></p>
+                    <!-- <p class="card-text">Initial Orientation</p>
+                    <p class="card-text">X-30 rad/s, y-67 rad/s, and z-35 rad/sec</p>
+                    <p class="card-text">Current Orientation</p>
+                    <p class="card-text">X-30 rad/s, y-67 rad/s, and z-35 rad/sec</p> -->
+                    <p class="card-text">3D visualization</p>
                   </div>
-                  
-                  
                 </div>
-
-                <?php
-                //   if ($depestCrack['CrackDepth'] > 18.0) {
-                //       echo "Deepest crack is " . $depestCrack['CrackDepth'];
-                //   } else {
-                //       echo "No crack";
-                //   }
-
-                //   if ($depestCrack['StrainOnBridge'] > 205) {
-                //     echo "Strain " . $depestCrack['StrainOnBridge'] . "Overload";
-                // } else {
-                //     echo "No Overload";
-                // }
-                //  echo " tilt ".$depestCrack['Tilt']."";
-                
-                ?>
               </div>
-            
-            </div>
-          </div>
-        </div>
-        
-      </div>
-    
-    </section>
-
-    <section class="table-components">
-      <div class="container-fluid">
-        <!-- ========== title-wrapper start ========== -->
-        <div class="title-wrapper pt-30">
-          <div class="row align-items-center">
-            <div class="col-md-6 align-items-center">
-              <!-- <div class="title mb-30">
-                <h2> <?=$resultw['Name'];?> Details</h2>
-                <h4>Location : <?=$resultw['Location'];?></h4>
-                
-              </div> -->
-            </div>
-            <!-- end col -->
-          </div>
-          <!-- end row -->
-        </div>
-        <!-- ========== title-wrapper end ========== -->
-        <div class="tabs-wrapper">
-          <div class="row">
-            <div class="col-lg-12">
-              <div class="tab-style-2 card-style mb-30">
-
-                <div class="tab-content" id="nav-tabContent2">
-                  <div class="tab-pane fade show active" id="news">
-                  <span class="mr-3 text-primary">
-                  <?php
-                  $date = $conn->query("SELECT now() date");
-                  $date = $date->fetch_assoc()['date'];
-                  echo date('d F Y', strtotime($date));
-                  $conn->close();
-                  ?>
-                 </span>
-                    <div id="chart-waterleve" class="container"></div>
-                    <div id="chart-humidity" class="container"></div>
-                    <div id="chart-pressure" class="container"></div>
-
-                  
+              <div class="col-lg-4">
+                <div class="card-style mb-30">
+                  <div class="card-body" style="height: 250px;">
+                    <h5 class="card-title">Crack Details</h5>
+                    <p class="card-text">Number of cracks: 1</p>
+                    <p class="card-text">Need attention cracks: 1</p>
+                    <p class="card-text">Normal cracks: none</p>
+                    <p class="card-text">Crack 1: <span class="<?= $info['CrackDepth'] < 30 ? 'text-success' : 'text-danger' ?>"><?= $info['CrackDepth'] ?> M deep</span></p>
+              
                   </div>
-                  
-                  
                 </div>
-
-                <?php
-                //   if ($depestCrack['CrackDepth'] > 18.0) {
-                //       echo "Deepest crack is " . $depestCrack['CrackDepth'];
-                //   } else {
-                //       echo "No crack";
-                //   }
-
-                //   if ($depestCrack['StrainOnBridge'] > 205) {
-                //     echo "Strain " . $depestCrack['StrainOnBridge'] . "Overload";
-                // } else {
-                //     echo "No Overload";
-                // }
-                //  echo " tilt ".$depestCrack['Tilt']."";
-                
-                ?>
               </div>
-            
+              <div class="col-lg-4">
+                <div class="card-style mb-30">
+                  <div class="card-body" style="height: 250px;">
+                    <h5 class="card-title">Strain On Bridge Details</h5>
+                    <p class="card-text">Max weight: <span class="text-success title">30 tons</span></p>
+                    <p class="card-text">Current weight: <span class="<?= $info['StrainOnBridge'] < 30 ? 'text-success' : 'text-danger' ?>"><?= $info['StrainOnBridge'] ?> tons</span></p>
+                    <p class="card-text">Status: <span class="<?= $info['StrainOnBridge'] > 30 ? 'text-danger' : 'text-success' ?>"><?= $info['StrainOnBridge'] > 30 ? 'Temporarily closed' : 'Safe to use' ?></span></p>
+
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-        
-      </div>
-    
-    </section>
+            <!-- ========== Additional Cards end ========== -->
+
+                          
+                        </div>
+                      </section>
+
+                        <div class="tabs-wrapper">
+                              <div class="row">
+                                <div class="col-lg-12">
+                                  <div class="tab-style-2 card-style mb-30">
+                                    <div class="tab-content" id="nav-tabContent2">
+                                      <div class="tab-pane fade show active" id="news">
+                                        <span class="mr-3 text-primary">
+                                          <?php
+                                          echo date('d F Y', strtotime($date));
+                                          ?>
+                                        </span>
+
+
+                                        <div id="chart-waterleve" class="container"></div>
+                                       
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="rotate-img">
+                                    Picture
+                                <img
+                                  src="<?=$relative_path;?>upload/<?=$resultw['AttachmentName'];?>"
+                                  alt="banner"
+                                  class="img-fluid mt-4 mb-4"
+                                />
+                        </div>
+                                </div>
+                              </div>
+                            </div>
+                            
   
   </main>
+  
   
   <script src="https://code.highcharts.com/highcharts.js"></script>
   <script src="assets/js/bootstrap.bundle.min.js"></script>
@@ -227,81 +225,50 @@ include 'head.php';
   <script src="assets/js/main.js"></script>
   <script>
 
-var value1 = <?php echo $value1; ?>;
-var value2 = <?php echo $value2; ?>;
-var value3 = <?php echo $value3; ?>;
+var waterleveldata = <?php echo $waterleveldata; ?>;
 var CreatedAt = <?php echo $CreatedAt; ?>;
 
 var chartT = new Highcharts.Chart({
-  chart:{ renderTo : 'chart-waterleve' },
+  chart: { renderTo: 'chart-waterleve' },
   title: { text: 'WATER LEVELS' },
   series: [{
     showInLegend: false,
-    data: value1
+    data: waterleveldata,
+    color: '#059e8a', // Set the default color for the series
+    threshold: 120 // Specify the threshold value for threadshort
   }],
   plotOptions: {
-    line: { animation: false,
+    line: {
+      animation: false,
       dataLabels: { enabled: true }
-    },
-    series: { color: '#059e8a' }
+    }
   },
-  xAxis: { 
+  xAxis: {
     type: 'datetime',
     categories: CreatedAt
   },
   yAxis: {
-    title: { text: 'Water level ' }
-    //title: { text: 'Temperature (Fahrenheit)' }
+    title: { text: 'Water level' }
   },
   credits: { enabled: false }
 });
 
-// var chartH = new Highcharts.Chart({
-//   chart:{ renderTo:'chart-humidity' },
-//   title: { text: 'Vibrations' },
-//   series: [{
-//     showInLegend: false,
-//     data: value2
-//   }],
-//   plotOptions: {
-//     line: { animation: false,
-//       dataLabels: { enabled: true }
-//     }
-//   },
-//   xAxis: {
-//     type: 'datetime',
-//     //dateTimeLabelFormats: { second: '%H:%M:%S' },
-//     categories: CreatedAt
-//   },
-//   yAxis: {
-//     title: { text: 'Vibrations' }
-//   },
-//   credits: { enabled: false }
-// });
+// Change the color of points exceeding the threshold to red
+chartT.series[0].points.forEach(function(point) {
+  if (point.y > 120) {
+    point.update({
+      color: 'red',
+      marker: {
+        fillColor: 'red'
+      }
+    }, false);
+  }
+});
+
+// Redraw the chart to reflect the color changes
+chartT.redraw();
 
 
-// var chartP = new Highcharts.Chart({
-//   chart:{ renderTo:'chart-pressure' },
-//   title: { text: 'Strain' },
-//   series: [{
-//     showInLegend: false,
-//     data: value3
-//   }],
-//   plotOptions: {
-//     line: { animation: false,
-//       dataLabels: { enabled: true }
-//     },
-//     series: { color: '#18009c' }
-//   },
-//   xAxis: {
-//     type: 'datetime',
-//     categories: CreatedAt
-//   },
-//   yAxis: {
-//     title: { text: 'Pressure (hPa)' }
-//   },
-//   credits: { enabled: false }
-// });
 
 </script>
 </body>
