@@ -155,7 +155,7 @@ void setup() {
     request->send(200, "text/plain", "OK");
   });
 
-  // Handle Web Server Events
+  // To handle all Web Server Events
   events.onConnect([](AsyncEventSourceClient *client){
     if(client->lastId()){
       Serial.printf("Client reconnected! Last message ID that it got is: %u\n", client->lastId());
