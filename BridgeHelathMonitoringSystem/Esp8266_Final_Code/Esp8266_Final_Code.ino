@@ -233,6 +233,18 @@ void loop() {
   }else{
     BridgeSafe();
   }
+}else if((abs(rollDiff) >= 5 && abs(rollDiff) < 27) || (abs(pitchDiff) >= 5 && abs(pitchDiff) < 11) || (abs(yawDiff) >= 2 && abs(yawDiff) < 10)) {
+    tiltLevel = "LITTLE TILT";
+    BridgeSafe();
+  } else if ((abs(rollDiff) >= 27 && abs(rollDiff) < 56) || (abs(pitchDiff) >= 11 && abs(pitchDiff) < 20) || (abs(yawDiff) >= 10 && abs(yawDiff) < 20)) {
+    tiltLevel = "MEDIUM TILT";
+    BridgeSafe();
+  } else if (abs(rollDiff) >= 56 || abs(pitchDiff) >= 20 || abs(yawDiff) >= 20) {
+    tiltLevel = "HIGH TILT";
+    BridgeNotSafe();
+  }else{
+    BridgeSafe();
+  }
 
  Serial.println(tiltLevel); // print tilt level
   //Check WiFi connection status
