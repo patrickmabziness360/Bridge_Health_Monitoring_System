@@ -237,7 +237,7 @@ void loop() {
  Serial.println(tiltLevel); // print tilt level
   //Check WiFi connection status
   if(WiFi.status()== WL_CONNECTED){
-    WiFiClient client;
+    WiFiClient client; // connection to client
     HTTPClient http;
     
     // Your Domain name with URL path or IP address with path
