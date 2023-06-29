@@ -87,7 +87,7 @@ Serial.begin(115200);
   lcd.clear();// Clear the display
   Wire.setClock(10000);
   
-  //servo configurations 
+  //configuring servo configurations 
   servo.attach(ServoPin); //D4
   servo.write(0);
 
