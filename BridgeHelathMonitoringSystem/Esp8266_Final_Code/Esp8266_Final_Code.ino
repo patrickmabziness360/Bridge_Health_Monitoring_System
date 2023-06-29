@@ -234,7 +234,7 @@ void loop() {
     BridgeSafe();
   }
 
- Serial.println(tiltLevel);
+ Serial.println(tiltLevel); // print tilt level
   //Check WiFi connection status
   if(WiFi.status()== WL_CONNECTED){
     WiFiClient client;
