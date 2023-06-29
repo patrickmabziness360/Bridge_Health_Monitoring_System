@@ -8,7 +8,7 @@
 #include <Arduino_JSON.h>
 #include "SPIFFS.h"
 
-// Replace with your network credentials
+// Provide  with your own network credentials
 const char* ssid = "SKYLABS360(MABZINESS";
 const char* password = "Tazie25800p";
 
