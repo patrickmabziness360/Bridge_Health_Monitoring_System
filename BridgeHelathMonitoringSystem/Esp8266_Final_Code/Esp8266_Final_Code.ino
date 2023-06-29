@@ -153,10 +153,6 @@ void loop() {
   // Calculate the distance
   distanceCm = duration * SOUND_VELOCITY/2;  
 
-
-  //Serial.print("vibration: ");
-  //Serial.println(Vibration);
-
   // Prints the distance on the Serial Monitor
   Serial.print("Distance (cm): ");
   Serial.println(distanceCm);
@@ -166,11 +162,6 @@ void loop() {
   Serial.print("Water level: ");
   Serial.println(waterlevel);  // See the Value In Serial Monitor
 
-  // if( Vibration != 1 ){
-  //   Serial.println(" Alert Viberation"); //serial monitor for debug 
-  //   BridgeNotSafe();
-
-  // }else 
    /* Get new sensor events with the readings */
   sensors_event_t a, g, temp;
   mpu.getEvent(&a, &g, &temp);
@@ -203,9 +194,9 @@ void loop() {
   
 
  // SCALE CHECKING 
-  Serial.print("one reading:\t");
+  Serial.print("one reading:\t"); 
   Serial.print(scale.get_units(), 1);
-  Serial.print("\t| average:\t");
+  Serial.print("\t| average:\t"); // print average weight reading
   Serial.println(scale.get_units(10), 5);
   float Weight = scale.get_units(10);
   scale.power_down();             // put the ADC in sleep mode
