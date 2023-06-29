@@ -295,7 +295,7 @@ void BridgeNotSafe(){
 
        
   }
-// safe functions
+// These are our safe functions
   void BridgeSafe(){
         roadStatus ="OPENED";
         bridgeStatus="SAFE TO USE";
