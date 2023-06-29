@@ -113,7 +113,7 @@ String getAccReadings() {
   String accString = JSON.stringify (readings);
   return accString;
 }
-
+// get temperature
 String getTemperature(){
   mpu.getEvent(&a, &g, &temp);
   temperature = temp.temperature;
