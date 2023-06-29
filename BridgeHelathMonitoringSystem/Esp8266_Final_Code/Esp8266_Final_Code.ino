@@ -279,7 +279,7 @@ void loop() {
   //----------------------------------------------------------------------------------
 }
 
- //not safe function
+ //These are our not safe function
 void BridgeNotSafe(){
         roadStatus ="CLOSED";
         bridgeStatus="NOT SAFE TO USE";
