@@ -1,4 +1,4 @@
-
+// visualisation of animation and other features
 
 let scene, camera, rendered, cube;
 
