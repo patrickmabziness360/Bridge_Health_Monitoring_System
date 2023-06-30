@@ -23,8 +23,18 @@
 const char* ssid     = "SKYLABS360(MABZINESS)";
 const char* password = "Tazie25800p!";
 
+// Array of server IP addresses
+const char* serverIPAddresses[] = {
+  "192.168.0.6",
+  "192.168.0.5",
+  "192.168.0.3"
+};
+
 // URL path for sending posted data
-const char* serverName = "http://192.168.0.5/OurProject/BridgeHelathMonitoringSystem/admin/post-sensor-values.php";
+const char* serverPath = "/OurProject/BridgeHelathMonitoringSystem/admin/post-sensor-values.php";
+
+// URL path for sending posted data
+//const char* serverName = "http://192.168.0.6/OurProject/BridgeHelathMonitoringSystem/admin/post-sensor-values.php";
 
 //api key for each microcontroller 
 String apiKeyValue = "tPmAT5Ab3j7F9";
@@ -250,36 +260,42 @@ if (isFirstReading) {
  
                   //Sending data to the dashboard 
 //-----------------------------------------------------------------------------------------------------------------------------------------------------
-  if(WiFi.status()== WL_CONNECTED){ //Check WiFi connection status
-    WiFiClient client;
-    HTTPClient http;
-    
-    http.begin(client, serverName);
-    http.addHeader("Content-Type", "application/x-www-form-urlencoded");
-    
-     String httpRequestData = "api_key=" + apiKeyValue + "&tilt=" + String(tiltLevel)
-                               + "&crackDepth=" + String(distanceCm) + "&waterlevel=" + String(waterlevel)+ "&strain=" + 
-                               String(Weight) + "&roadStatus=" + String(roadStatus) + "&bridgeStatus=" + String(bridgeStatus) + "";// Prepare your HTTP POST request data
-    
-    Serial.print("httpRequestData: ");
-    Serial.println(httpRequestData);
-    
-    int httpResponseCode = http.POST(httpRequestData); // Send HTTP POST request
-    if (httpResponseCode == HTTP_CODE_OK) {
-      String response = http.getString();
-      Serial.println("Response: " + response);// Print the response from the PHP file
+          // Iterate through each server IP address
+  for (int i = 0; i < sizeof(serverIPAddresses) / sizeof(serverIPAddresses[0]); i++) {
+    const char* serverIP = serverIPAddresses[i];
 
-    }else {
-     Serial.println("Error: " + http.errorToString(httpResponseCode));
+    if (WiFi.status() == WL_CONNECTED) { // Check WiFi connection status
+      WiFiClient client;
+      HTTPClient http;
+
+      // Construct the complete server URL
+      String serverURL = "http://" + String(serverIP) + serverPath;
+
+      http.begin(client, serverURL);
+      http.addHeader("Content-Type", "application/x-www-form-urlencoded");
+
+      String httpRequestData = "api_key=" + apiKeyValue + "&tilt=" + String(tiltLevel) +
+                               "&crackDepth=" + String(distanceCm) + "&waterlevel=" + String(waterlevel) + "&strain=" +
+                               String(Weight) + "&roadStatus=" + String(roadStatus) + "&bridgeStatus=" + String(bridgeStatus);
+
+      Serial.print("httpRequestData: ");
+      Serial.println(httpRequestData);
+
+      int httpResponseCode = http.POST(httpRequestData); // Send HTTP POST request
+      if (httpResponseCode == HTTP_CODE_OK) {
+        String response = http.getString();
+        Serial.println("Response: " + response); // Print the response from the server
+      } else {
+        Serial.println("Error: " + http.errorToString(httpResponseCode));
+      }
+
+      http.end(); // Free resources
+    } else {
+      Serial.println("WiFi Disconnected");
     }
-    http.end();// Free resources
-  }
-  else {
-    Serial.println("WiFi Disconnected");
-  }
-  
-  delay(2000); 
 
+    delay(2000);
+  }
   //----------------------------------------------------------------------------------
 }
 
