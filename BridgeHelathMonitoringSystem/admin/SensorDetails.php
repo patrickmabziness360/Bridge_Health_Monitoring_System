@@ -35,7 +35,7 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
   //   $initialOrriantaion = $initialOriatationQuery -> fetch_assoc();
 
   // }
-  $sql = "SELECT ID, VibrationLevels, StrainOnBridge, Water_Level, CrackDepth, TIME(CreatedAt) AS CreatedTime FROM bridge.tblBridgeSensorData WHERE BridgeID = $id ORDER BY CreatedAt DESC LIMIT 13;";
+  $sql = "SELECT ID,StrainOnBridge, Water_Level, CrackDepth, TIME(CreatedAt) AS CreatedTime FROM bridge.tblBridgeSensorData WHERE BridgeID = $id ORDER BY CreatedAt DESC LIMIT 13;";
   $result = $conn->query($sql);
   
   $sensor_data = array();

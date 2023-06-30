@@ -24,7 +24,7 @@ const char* ssid     = "SKYLABS360(MABZINESS)";
 const char* password = "Tazie25800p!";
 
 // URL path for sending posted data
-const char* serverName = "http://192.168.0.6/OurProject/BridgeHelathMonitoringSystem/admin/post-sensor-values.php";
+const char* serverName = "http://192.168.0.5/OurProject/BridgeHelathMonitoringSystem/admin/post-sensor-values.php";
 
 //api key for each microcontroller 
 String apiKeyValue = "tPmAT5Ab3j7F9";
