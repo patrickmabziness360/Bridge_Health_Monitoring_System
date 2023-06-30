@@ -24,7 +24,7 @@
 
    include ('../common/db_connect.php');
 
-   
+   header("refresh: 5"); // Refresh the page after 5 seconds
    
    
    
@@ -120,13 +120,13 @@
                   <div class="row">
                     <div class="col-lg-8">
                      
-
+ <?php if (!empty($info['BridgeStatus'])) : ?>  
                     <main class="main-wrapper">
                 <!-- ========== header start ========== -->
                 
                 
                           <!-- ========== table components start ========== -->
-                    <?php if (!empty($info['BridgeStatus'])) : ?>  
+                   
                       <section class="table-components">
                         <div class="container-fluid">
                           <!-- ========== title-wrapper start ========== -->
@@ -156,19 +156,25 @@
                                   <?php
 
                                    if ($info['RoadStatus'] == 'CLOSED') {
-                                      echo '<h3 class="font-weight-400 mb-1">DUE TO :</31>';
+
+                                    echo '<h5 class="font-weight-400 mb-1 text-danger">DUE TO :</h5>';
                                       
-                                    // if ($row['VibrationLevels'] != 90000 ) {
-                                    //     echo '<h3 class="font-weight-400 mb-1">High Vibrations</h3>';
-                                    // } 
+                                    if ($info['StrainOnBridge'] >170. ) {
+                                        echo '<h5 class="font-weight-400 text-danger mb-1">Over Weight</h5>';
+                                    } 
+                                    
                                     if ($info['CrackDepth'] > 13.0) {
-                                        echo '<h3>There exist a big crack which needs maintainance </h3>';
-                                    } if ($info['Water_level'] > 50) {
-                                      echo '<h3 class="font-weight-400 mb-1">High Water Level</h3>';
+                                        echo '<h5 class="font-weight-400 text-danger">There exists a big crack which needs maintenance</h5>';
                                     }
+                                    
+                                    if ($info['Water_level'] > 50) {
+                                        echo '<h5 class="font-weight-400 mb-1 text-danger">High Water Level</h5>';
+                                    }
+                                    
                                     if ($info['Tilt'] == "HIGH TILT") {
-                                    echo '<h3 class="font-weight-400 mb-1">The bridge is tilted</h3>';
+                                        echo '<h5 class="font-weight-400 mb-1 text-danger">The bridge is tilted</h3>';
                                     }
+                                    
 
                                     } 
 
@@ -180,41 +186,66 @@
                           <!-- ========== title-wrapper end ========== -->
             <!-- ========== Additional Cards start ========== -->
             <div class="row">
-              <div class="col-lg-4">
-                <div class="card-style mb-30">
-                  <div class="card-body" style="height: 250px;">
-                    <h5 class="card-title">Orientation Details</h5>
-                    <p class="card-text">The Bridge has: <span class="<?= $info['Tilt'] === 'HIGH TILT' ? 'text-danger' : 'text-success' ?>"><?= $info['Tilt'] ?></span></p>
-                    <!-- <p class="card-text">Initial Orientation</p>
-                    <p class="card-text">X-30 rad/s, y-67 rad/s, and z-35 rad/sec</p>
-                    <p class="card-text">Current Orientation</p>
-                    <p class="card-text">X-30 rad/s, y-67 rad/s, and z-35 rad/sec</p> -->
-                    <!-- <p class="card-text">3D visualization</p> -->
+            <div class="col-lg-4">
+                        <div class="card-style mb-30 <?= $info['Tilt'] === 'HIGH TILT' ? 'bg-danger' : '' ?>">
+                              <div class="card-body" style="height: 170px;">
+                                  <h5 class="card-title ">Orientation Details</h5>
+                                  <p class="card-text font-weight-400">
+                                  <span class="<?= $info['Tilt'] === 'HIGH TILT' ? 'text-white' : 'text-black' ?>">The Bridge is:</span>
+                                         <span class="<?= $info['Tilt'] === 'HIGH TILT' ? 'text-danger' : 'text-success' ?>">
+                                          <?= $info['Tilt'] === 'HIGH TILT' ? '<span class="text-white">' . "Tilted" . '</span>' : "Not Tilted" ?>
+                                      </span>
+                                  </p>
+                                  <!-- <p class="card-text">Initial Orientation</p>
+                                  <p class="card-text">X-30 rad/s, y-67 rad/s, and z-35 rad/sec</p>
+                                  <p class="card-text">Current Orientation</p>
+                                  <p class="card-text">X-30 rad/s, y-67 rad/s, and z-35 rad/sec</p> -->
+                                  <!-- <p class="card-text">3D visualization</p> -->
+                              </div>
+                        </div>
                   </div>
-                </div>
-              </div>
-              <div class="col-lg-4">
-                <div class="card-style mb-30">
-                  <div class="card-body" style="height: 250px;">
-                    <h5 class="card-title">Crack Details</h5>
-                    <!-- <p class="card-text">Number of cracks: 1</p>
-                    <p class="card-text">Number of harmful cracks: 1</p> -->
-                    <p class="card-text">Depest Crack: <span class="<?= $info['CrackDepth'] < 30 ? 'text-success' : 'text-danger' ?>"><?= $info['CrackDepth'] ?> M deep</span></p>
-              
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-4">
-                <div class="card-style mb-30">
-                  <div class="card-body" style="height: 250px;">
-                    <h5 class="card-title">Strain On Bridge Details</h5>
-                    <p class="card-text">Max weight: <span class="text-success title">30 tons</span></p>
-                    <p class="card-text">Current weight: <span class="<?= $info['StrainOnBridge'] < 30 ? 'text-success' : 'text-danger' ?>"><?= $info['StrainOnBridge'] ?> tons</span></p>
-                    <p class="card-text">Status: <span class="<?= $info['StrainOnBridge'] > 30 ? 'text-danger' : 'text-success' ?>"><?= $info['StrainOnBridge'] > 30 ? 'Temporarily closed' : 'Safe to use' ?></span></p>
 
-                  </div>
-                </div>
-              </div>
+                  <div class="col-lg-4">
+                            <div class="card-style mb-30 <?= $info['CrackDepth'] > 13 ? 'bg-danger' : '' ?>">
+                                <div class="card-body" style="height: 170px;">
+                                    <h5 class="card-title">Crack Details</h5>
+                                    <!--<p class="card-text">Number of cracks: 1</p>
+                                    <p class="card-text">Need attention cracks: 1</p>
+                                    <p class="card-text">Normal cracks: none</p>-->
+                                    <p class="card-text">
+                                    <span class="<?= $info['CrackDepth'] > 13 ? 'text-white' : 'text-black' ?>"> Biggest Crack:</span>
+                                      <span class="<?= $info['CrackDepth'] > 13 ? 'text-white' : 'text-success' ?>">
+                                          <?= $info['CrackDepth'] > 13 ? $info['CrackDepth'] : '0' ?> M deep
+                                      </span>
+                                  </p>
+
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-lg-4">
+                          <div class="card-style mb-35 <?= $info['StrainOnBridge'] >170. ? 'bg-danger' : '' ?>">
+                              <div class="card-body" style="height: 300px;">
+                                  <h5 class="card-title">Strain  Details</h5>
+                                  <p class="card-text">
+                                  <span class="<?= $info['CrackDepth'] >170. ? 'text-white' : 'text-black' ?>"> Max weight:</span>  <span class="<?= $info['StrainOnBridge'] >170. ? 'text-white' : 'text-success' ?> title">50 tons</span>
+                                  </p>
+                                  <p class="card-text">
+                                  <span class="<?= $info['CrackDepth'] >170. ? 'text-white' : 'text-black' ?>"> Current weight:</span>  <span class="<?= $info['StrainOnBridge'] >170. ? 'text-white' : ($info['StrainOnBridge'] < 30 ? 'text-success' : ($info['StrainOnBridge'] <170. ? 'text-success' : 'text-danger')) ?>">
+                                      <?= ($info['StrainOnBridge'] < 30) ? 0 : $info['StrainOnBridge']-107 ?> tons
+                                  </span>
+                                  </p>
+                                  <p class="card-text">
+                                  <span class="<?= $info['CrackDepth'] >170. ? 'text-white' : 'text-black' ?>"> status:</span> <span class="<?= $info['StrainOnBridge'] >170. ? 'text-white' : ($info['StrainOnBridge'] > 30 ? 'text-danger' : 'text-success') ?>">
+                                          <?= $info['StrainOnBridge'] >170. ? 'Temporarily closed' : 'Safe to use' ?>
+                                      </span>
+                                  </p>
+                              </div>
+                          </div>
+                      </div>
+
             </div>
             <!-- ========== Additional Cards end ========== -->
 
@@ -304,13 +335,7 @@
             </div>
           </div>
         </div>
-        <!-- main-panel ends -->
-        <!-- container-scroller ends -->
-
-        <!-- partial:partials/_footer.html -->
-       
-
-        <!-- partial -->
+        
       </div>
     </div>
     <!-- inject:js -->
@@ -349,7 +374,7 @@ var chartT = new Highcharts.Chart({
     showInLegend: false,
     data: waterleveldata,
     color: '#059e8a', // Set the default color for the series
-    threshold: 120 // Specify the threshold value for threadshort
+    threshold: 500 // Specify the threshold value for threadshort
   }],
   plotOptions: {
     line: {
@@ -369,7 +394,7 @@ var chartT = new Highcharts.Chart({
 
 // Change the color of points exceeding the threshold to red
 chartT.series[0].points.forEach(function(point) {
-  if (point.y > 120) {
+  if (point.y > 500) {
     point.update({
       color: 'red',
       marker: {

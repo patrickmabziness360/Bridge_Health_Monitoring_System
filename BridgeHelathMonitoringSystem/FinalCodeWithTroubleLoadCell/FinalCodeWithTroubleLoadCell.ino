@@ -1,3 +1,4 @@
+
 //lIbraries
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
@@ -60,10 +61,10 @@ bool isFirstReading = true;
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 // HX711 circuit wiring
-// const int LOADCELL_DOUT_PIN = D0;
-// const int LOADCELL_SCK_PIN = D7;
+const int LOADCELL_DOUT_PIN = D0;
+const int LOADCELL_SCK_PIN = D7;
 
-// HX711 scale;
+ HX711 scale;
 
 WiFiClient client;
 
@@ -112,9 +113,9 @@ Serial.begin(115200);
   mpu.setFilterBandwidth(MPU6050_BAND_5_HZ);
 
 //values for loadcell
-  // scale.begin(LOADCELL_DOUT_PIN, LOADCELL_SCK_PIN);       
-  // scale.set_scale(-379.319);
-  // scale.tare();               // reset the scale to 0
+  scale.begin(LOADCELL_DOUT_PIN, LOADCELL_SCK_PIN);       
+  scale.set_scale(-379.319);
+  scale.tare();               // reset the scale to 0
 
   // Serial.println("");
   // delay(100);
@@ -193,17 +194,27 @@ if (isFirstReading) {
 
               //Scale section  
 //===================================================================================================
-  // Serial.print("one reading:\t");
-  // Serial.print(scale.get_units(), 1);
-  // Serial.print("\t| average:\t");
-  // Serial.println(scale.get_units(10), 5);
-  // float Weight = scale.get_units(10);
-  // scale.power_down();             // put the ADC in sleep mode
-  // delay(500);
-  // scale.power_up();
-  // if (Weight < 0) {
-  //  Weight = 0; // Set weight to 0 if it is negative
-  // }
+   // Serial.print("one reading:\t");
+   // float weightReading = scale.get_units();
+   // Serial.print(weightReading, 1);
+    //Serial.print("Average:\t");
+    //float averageReading = scale.get_units(10);
+    //Serial.println(averageReading, 5);
+    //float Weight = averageReading; 
+    //scale.power_down();             // put the ADC in sleep mode
+    //delay(500);
+    //scale.power_up();
+    //Serial.print("one reading:\t");
+    //float weightReading = scale.get_units();
+   // Serial.print(weightReading, 1);
+    //Serial.print("\t| average:\t");
+    float averageReading = scale.get_units(10);
+    //Serial.println(averageReading, 5);
+    float Weight = averageReading;
+    scale.power_down();             // put the ADC in sleep mode
+    //delay(500);
+    scale.power_up();
+
   
 
 //===================================================================================================
@@ -216,10 +227,10 @@ if (isFirstReading) {
  }else if(waterlevel > 500){
     BridgeNotSafe();
  }
-//  else if(Weight > 70){
-//     OverWeight();
+ else if(Weight > 170.0){
+    OverWeight();
 
-//  }
+ }
 // else if((abs(rollDiff) >= 5 && abs(rollDiff) < 27) || (abs(pitchDiff) >= 5 && abs(pitchDiff) < 11) || (abs(yawDiff) >= 2 && abs(yawDiff) < 10)) {
 //     tiltLevel = "LITTLE TILT";
 //     BridgeSafe();
@@ -248,7 +259,7 @@ if (isFirstReading) {
     
      String httpRequestData = "api_key=" + apiKeyValue + "&tilt=" + String(tiltLevel)
                                + "&crackDepth=" + String(distanceCm) + "&waterlevel=" + String(waterlevel)+ "&strain=" + 
-                               String(distanceCm) + "&roadStatus=" + String(roadStatus) + "&bridgeStatus=" + String(bridgeStatus) + "";// Prepare your HTTP POST request data
+                               String(Weight) + "&roadStatus=" + String(roadStatus) + "&bridgeStatus=" + String(bridgeStatus) + "";// Prepare your HTTP POST request data
     
     Serial.print("httpRequestData: ");
     Serial.println(httpRequestData);
@@ -267,7 +278,7 @@ if (isFirstReading) {
     Serial.println("WiFi Disconnected");
   }
   
-  delay(5000); 
+  delay(2000); 
 
   //----------------------------------------------------------------------------------
 }
@@ -305,16 +316,16 @@ void BridgeNotSafe(){
 //======================================================================================================
 
 
-  // void OverWeight(){
-  //       roadStatus ="CLOSED";
-  //       bridgeStatus="NOT SAFE TO USE";
+  void OverWeight(){
+        roadStatus ="CLOSED";
+        bridgeStatus="NOT SAFE TO USE";
        
-  //       lcd.setCursor(0, 1);
-  //       servo.write(90); //lotating the servo motor 90 degrees
-  //       lcd.print("EXCEEDED MAX LOAD"); // printing message on the LCD 
+        lcd.setCursor(0, 1);
+        servo.write(90); //lotating the servo motor 90 degrees
+        lcd.print("EXCEEDED MAX LOAD"); // printing message on the LCD 
 
-  //       tone(Passive_buzzer, 1046) ; // SI note ...
-  //       delay (1000); 
-  //       noTone(Passive_buzzer) ; //Turn off the pin attached to the tone()
-  //       delay(200);
-  // }
+        tone(Passive_buzzer, 1046) ; // SI note ...
+        delay (1000); 
+        noTone(Passive_buzzer) ; //Turn off the pin attached to the tone()
+        delay(200);
+  }

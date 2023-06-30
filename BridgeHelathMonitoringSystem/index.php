@@ -97,7 +97,9 @@ $currentTime = strtotime($date);
                     }
                     if ($row['Tilt'] == "HIGH TILT") {
                     echo '<h3 class="font-weight-400 mb-1">The bridge is tilted</h3>';
-                    }
+                    }if ($row['StrainOnBridge'] > 70 ) {
+                      echo '<h3 class="font-weight-400 mb-1"> OverWeight </h3>';
+                      }
 
                     } 
 
@@ -164,19 +166,11 @@ $currentTime = strtotime($date);
 
   </div>
 </div>
-<!-- main-panel ends -->
-<!-- container-scroller ends -->
 
-<!-- partial:partials/_footer.html -->
-
-
-<!-- partial -->
 </div>
 </div>
-<!-- inject:js -->
+
 <script src="assets/vendors/js/vendor.bundle.base.js"></script>
-<!-- endinject -->
-<!-- plugin js for this page -->
 <script src="assets/vendors/aos/dist/aos.js/aos.js"></script>
 <!-- End plugin js for this page -->
 <!-- Custom js for this page-->

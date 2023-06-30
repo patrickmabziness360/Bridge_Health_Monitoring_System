@@ -162,7 +162,7 @@ include 'head.php';
                                   <p class="card-text">X-30 rad/s, y-67 rad/s, and z-35 rad/sec</p> -->
                                   <!-- <p class="card-text">3D visualization</p> -->
                               </div>
-                          </div>
+                        </div>
                   </div>
 
 
