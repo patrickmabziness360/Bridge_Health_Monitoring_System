@@ -262,18 +262,11 @@ if (isset($_POST['saveChanges'])) {
             </form>
           </div>
         </div>
-        <!-- end container -->
+        
       </section>
-      <!-- ========== table components end ========== -->
-
-      <!-- ========== footer start =========== -->
-      
-      <!-- ========== footer end =========== -->
+     
     </main>
-    <!-- ======== main-wrapper end =========== -->
-
     
-    <!-- ============ Theme Option End ============= -->
 
     <!-- ========= All Javascript files linkup ======== -->
     <script src="assets/js/bootstrap.bundle.min.js"></script>

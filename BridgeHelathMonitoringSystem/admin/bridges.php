@@ -228,15 +228,9 @@ include 'head.php';
       </div>
       <!-- end container -->
     </section>
-    <!-- ========== table components end ========== -->
-
-    <!-- ========== footer start =========== -->
    
-    <!-- ========== footer end =========== -->
   </main>
-  <!-- ======== main-wrapper end =========== -->
-
-  <!-- ============ Theme Option Start ============= -->
+  
 
   <!-- ========= All Javascript files linkup ======== -->
   <script src="assets/js/bootstrap.bundle.min.js"></script>

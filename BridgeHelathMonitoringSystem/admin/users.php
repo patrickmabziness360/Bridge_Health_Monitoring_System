@@ -404,9 +404,7 @@ include 'head.php';
     </section>
 
   </main>
-  <!-- ======== main-wrapper end =========== -->
-
-  <!-- ============ Theme Option Start ============= -->
+ 
 
   <!-- ============ Theme Option End ============= -->
 
