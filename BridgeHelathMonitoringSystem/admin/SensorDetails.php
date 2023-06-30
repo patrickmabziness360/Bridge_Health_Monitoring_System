@@ -191,13 +191,15 @@ include 'head.php';
                               <div class="card-body" style="height: 250px;">
                                   <h5 class="card-title">Strain On Bridge Details</h5>
                                   <p class="card-text">
-                                      Max weight: <span class="<?= $info['StrainOnBridge'] > 70 ? 'text-white' : 'text-success' ?> title">50 tons</span>
+                                  <span class="<?= $info['CrackDepth'] > 70 ? 'text-white' : 'text-black' ?>"> Max weight:</span>  <span class="<?= $info['StrainOnBridge'] > 70 ? 'text-white' : 'text-success' ?> title">50 tons</span>
                                   </p>
                                   <p class="card-text">
-                                      Current weight: <span class="<?= $info['StrainOnBridge'] > 70 ? 'text-white' : ($info['StrainOnBridge'] < 70 ? 'text-success' : 'text-danger') ?>"><?= $info['StrainOnBridge'] ?> tons</span>
+                                  <span class="<?= $info['CrackDepth'] > 70 ? 'text-white' : 'text-black' ?>"> Current weight:</span>  <span class="<?= $info['StrainOnBridge'] > 70 ? 'text-white' : ($info['StrainOnBridge'] < 30 ? 'text-success' : ($info['StrainOnBridge'] < 70 ? 'text-success' : 'text-danger')) ?>">
+                                      <?= ($info['StrainOnBridge'] < 30) ? 0 : $info['StrainOnBridge'] ?> tons
+                                  </span>
                                   </p>
                                   <p class="card-text">
-                                      Status: <span class="<?= $info['StrainOnBridge'] > 70 ? 'text-white' : ($info['StrainOnBridge'] > 30 ? 'text-danger' : 'text-success') ?>">
+                                  <span class="<?= $info['CrackDepth'] > 70 ? 'text-white' : 'text-black' ?>"> status:</span> <span class="<?= $info['StrainOnBridge'] > 70 ? 'text-white' : ($info['StrainOnBridge'] > 30 ? 'text-danger' : 'text-success') ?>">
                                           <?= $info['StrainOnBridge'] > 70 ? 'Temporarily closed' : 'Safe to use' ?>
                                       </span>
                                   </p>
