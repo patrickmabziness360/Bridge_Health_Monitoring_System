@@ -168,7 +168,7 @@ void setup() {
 
   server.begin();
 }
-
+// update all readings after some time
 void loop() {
   if ((millis() - lastTime) > gyroDelay) {
     // Send Events to the Web Server with the Sensor Readings
