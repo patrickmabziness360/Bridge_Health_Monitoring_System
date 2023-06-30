@@ -22,13 +22,13 @@
 <body>
   <div class="container-scroller">
     <div class="main-panel">
-      
+
       <?php
 
       // $closest_bridge = $conn->query("SELECT LTP.*, LTPF.Caption,LTPF.AttachmentName,d.RoadStatus,d.BridgeStatus FROM bridge.tblBridge LTP INNER JOIN bridge.tblBridgeImages LTPF ON LTP.BridgeID = LTPF.BridgeID  INNER JOIN bridge.tblBridgeSensorData d
       // ON LTP.BridgeID=D.BridgeID ORDER BY d.CreatedAt DESC LIMIT 1;");
-
-    $closest_bridge = $conn->query("SELECT LTP.Name,LTP.Location,LTP.BridgeID,LTPF.Caption,LTPF.AttachmentName,d.Water_level,d.CrackDepth,d.VibrationLevels,d.RoadStatus,d.BridgeStatus,d.StrainOnBridge,d.CreatedAt,d.Tilt
+      
+      $closest_bridge = $conn->query("SELECT LTP.Name,LTP.Location,LTP.BridgeID,LTPF.Caption,LTPF.AttachmentName,d.Water_level,d.CrackDepth,d.RoadStatus,d.BridgeStatus,d.StrainOnBridge,d.CreatedAt,d.Tilt
                                     FROM bridge.tblBridge LTP INNER JOIN bridge.tblBridgeImages LTPF ON LTP.BridgeID = LTPF.BridgeID 
                                     INNER JOIN bridge.tblBridgeSensorData d ON LTP.BridgeID = d.BridgeID WHERE LTP.BridgeID =D.BridgeID ORDER BY d.CreatedAt DESC LIMIT 1;");
 
@@ -45,5 +45,5 @@
                               LIMIT 3;";
       $nearestBridges = $conn->query($nearestBridgesQuery);
 
-      
+
       ?>
