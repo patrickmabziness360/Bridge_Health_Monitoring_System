@@ -21,10 +21,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if($api_key == $api_key_value) {
 
                 // $bridgeID = test_input($_POST["BridgeID"]);
-                 $VibrationLevels = test_input($_POST["vibration"]);
+                 //$VibrationLevels = test_input($_POST["vibration"]);
                  $StrainOnBridge = test_input($_POST["strain"]);
                  $Water_Level = test_input($_POST["waterlevel"]);
-                 $Accelerometer = test_input($_POST["accelometer"]);
+                 //$Accelerometer = test_input($_POST["accelometer"]);
                  $crackDepth = test_input($_POST["crackDepth"]);
                  $RoadStatus = test_input($_POST["roadStatus"]);
                  $BridgeStatus = test_input($_POST["bridgeStatus"]);

@@ -9,6 +9,7 @@ include '../common/db_connect.php';
 
 <?php
 include 'head.php';
+header("refresh: 5"); // Refresh the page after 5 seconds
 ?>
 
 <body>

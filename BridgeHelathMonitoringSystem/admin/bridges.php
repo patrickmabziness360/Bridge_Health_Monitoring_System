@@ -1,7 +1,7 @@
 <?php
 include '../common/access.php';
 include '../common/db_connect.php';
-
+header("refresh: 5"); // Refresh the page after 5 seconds
 
 $all_bridges = $conn->query("SELECT LTP.Name,LTP.BridgeID, LTP.Location, d.RoadStatus, d.BridgeStatus,d.CreatedAt
 FROM bridge.tblBridge LTP 
@@ -27,6 +27,7 @@ include 'head.php';
   <!-- ======== sidebar-nav start =========== -->
   <?php
   include 'side_bar.php';
+  
   ?>
   <div class="overlay"></div>
   <!-- ======== sidebar-nav end =========== -->

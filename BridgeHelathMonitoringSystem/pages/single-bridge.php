@@ -2,7 +2,7 @@
   session_start();
   header("refresh: 5"); // Refresh the page after 5 seconds
   
-  include 'head.php';
+  include '../admin/head.php';
   
   $relative_path = '../';
   include ('../common/db_connect.php');
@@ -24,7 +24,7 @@
 
    include ('../common/db_connect.php');
 
-   header("refresh: 5"); // Refresh the page after 5 seconds
+   
    
    
    
@@ -64,11 +64,18 @@
        $sensor_data[] = $data;
    }
    
-   $readings_time = array_column($sensor_data, 'CreatedTime');
-   $waterleveldata = json_encode(array_reverse(array_column($sensor_data, 'Water_Level')), JSON_NUMERIC_CHECK);
-   $CreatedAt = json_encode(array_reverse($readings_time), JSON_NUMERIC_CHECK);
-   
-   
+  // Check if sensor data is null
+  if (!empty($sensor_data)) {
+    $readings_time = array_column($sensor_data, 'CreatedTime');
+    $waterleveldata = json_encode(array_reverse(array_column($sensor_data, 'Water_Level')), JSON_NUMERIC_CHECK);
+    $CreatedAt = json_encode(array_reverse($readings_time), JSON_NUMERIC_CHECK);
+
+    // Plot the graph or perform other actions with the sensor data
+    // ...
+} else {
+    // Sensor data is null, handle accordingly (e.g., display a message, skip graph plotting)
+    // ...
+}
    $result->free();
 
 
@@ -119,7 +126,7 @@
                 
                 
                           <!-- ========== table components start ========== -->
-                          
+                    <?php if (!empty($info['BridgeStatus'])) : ?>  
                       <section class="table-components">
                         <div class="container-fluid">
                           <!-- ========== title-wrapper start ========== -->
@@ -128,21 +135,21 @@
                               <div class="col-md-6 align-items-center">
                                 <div class="title mb-30">
 
-                                  <h6>Bridge Name : <span class="<?= $info['BridgeStatus'] === 'SAFE TO USE' ? 'text-success' : 'text-danger' ?>"> <?=$resultw['Name'];?> Details</span></h6>
-                                  <h6>Location : <span class="<?= $info['BridgeStatus'] === 'SAFE TO USE' ? 'text-success' : 'text-danger' ?>"> <?=$resultw['Location'];?> Details</span></h6>
-                                  <h6> Status : <span class="<?= $info['BridgeStatus'] === 'SAFE TO USE' ? 'text-success' : 'text-danger' ?>"> <?=$info['BridgeStatus'];?></span></h6>
+                                  <h3>Bridge Name : <span class="<?= $info['BridgeStatus'] === 'SAFE TO USE' ? 'text-success' : 'text-danger' ?>"> <?=$resultw['Name'];?> Details</span></h3>
+                                  <h5>Location : <span class="<?= $info['BridgeStatus'] === 'SAFE TO USE' ? 'text-success' : 'text-danger' ?>"> <?=$resultw['Location'];?> Details</span></h5>
+                                  <h5> Status : <span class="<?= $info['BridgeStatus'] === 'SAFE TO USE' ? 'text-success' : 'text-danger' ?>"> <?=$info['BridgeStatus'];?></span></h5>
 
-                                  <h6 class="text-enter">Date  :  <?=date('d F Y', strtotime($date));?></h6>
-                                  <!-- <h6 class="text-enter">Sensor  : </h6> -->
+                                  <h5 class="text-enter">Date  :  <?=date('d F Y', strtotime($date));?></h5>
+                                  <!-- <h5 class="text-enter">Sensor  : </h5> -->
 
                                   <?php
 
                                   $createdAt = $info['CreatedAt'];
 
                                     if ($createdAt === null || ($currentTime - strtotime($createdAt)) > 10) {
-                                      echo "<h6 class=\"text-da\"> Sensor  : <span class=\"text-danger\">  Offline - Since {$createdAt}</span> </h6>";
+                                      echo "<h5 class=\"text-da\"> Sensor  : <span class=\"text-danger\">  Offline - Since {$createdAt}</span> </h5>";
                                     } else {
-                                      echo '<h6 class="text-success"> Sensor  : Online</h6>';
+                                      echo '<h5 class="text-success"> Sensor  : Online</h5>';
                                     }
                                  ?>
  
@@ -182,7 +189,7 @@
                     <p class="card-text">X-30 rad/s, y-67 rad/s, and z-35 rad/sec</p>
                     <p class="card-text">Current Orientation</p>
                     <p class="card-text">X-30 rad/s, y-67 rad/s, and z-35 rad/sec</p> -->
-                    <p class="card-text">3D visualization</p>
+                    <!-- <p class="card-text">3D visualization</p> -->
                   </div>
                 </div>
               </div>
@@ -190,9 +197,9 @@
                 <div class="card-style mb-30">
                   <div class="card-body" style="height: 250px;">
                     <h5 class="card-title">Crack Details</h5>
-                    <p class="card-text">Number of cracks: 1</p>
-                    <p class="card-text">Number of harmful cracks: 1</p>
-                    <p class="card-text">Crack 1: <span class="<?= $info['CrackDepth'] < 30 ? 'text-success' : 'text-danger' ?>"><?= $info['CrackDepth'] ?> M deep</span></p>
+                    <!-- <p class="card-text">Number of cracks: 1</p>
+                    <p class="card-text">Number of harmful cracks: 1</p> -->
+                    <p class="card-text">Depest Crack: <span class="<?= $info['CrackDepth'] < 30 ? 'text-success' : 'text-danger' ?>"><?= $info['CrackDepth'] ?> M deep</span></p>
               
                   </div>
                 </div>
@@ -221,11 +228,7 @@
                                   <div class="tab-style-2 card-style mb-30">
                                     <div class="tab-content" id="nav-tabContent2">
                                       <div class="tab-pane fade show active" id="news">
-                                        <span class="mr-3 text-primary">
-                                          <?php
-                                          echo date('d F Y', strtotime($date));
-                                          ?>
-                                        </span>
+                                    
 
 
                                         <div id="chart-waterleve" class="container"></div>
@@ -249,6 +252,9 @@
   </main>
 
 
+  <?php else : ?>
+                                  <p>No data available</p>
+                              <?php endif; ?>
 
 
 

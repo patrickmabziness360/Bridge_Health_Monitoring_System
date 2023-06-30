@@ -12,7 +12,6 @@ CREATE TABLE `tblBridge` (
 CREATE TABLE `tblBridgeSensorData` (
   `ID` int NOT NULL AUTO_INCREMENT,
   `BridgeID` int NOT NULL,
-  `VibrationLevels` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `StrainOnBridge` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `Water_Level` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `crackDepth` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
